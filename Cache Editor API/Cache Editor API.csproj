@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{18B60F83-9129-474E-A55A-E30AC544B900}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Cache_Editor_API</RootNamespace>
+    <AssemblyName>Cache Editor API</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Graphics3D\Animable.cs" />
+    <Compile Include="Graphics3D\Class40.cs" />
+    <Compile Include="Graphics3D\Class43.cs" />
+    <Compile Include="Graphics3D\Class47.cs" />
+    <Compile Include="Graphics3D\DrawingArea.cs" />
+    <Compile Include="Graphics3D\Ground.cs" />
+    <Compile Include="Graphics3D\Model.cs" />
+    <Compile Include="Graphics3D\ModelHeader.cs" />
+    <Compile Include="Graphics3D\ModelTransform.cs" />
+    <Compile Include="Graphics3D\NetDrawingTools.cs" />
+    <Compile Include="Graphics3D\Object1.cs" />
+    <Compile Include="Graphics3D\Object2.cs" />
+    <Compile Include="Graphics3D\Object3.cs" />
+    <Compile Include="Graphics3D\Object4.cs" />
+    <Compile Include="Graphics3D\Object5.cs" />
+    <Compile Include="Graphics3D\Rasterizer.cs" />
+    <Compile Include="Archive.cs" />
+    <Compile Include="DataBuffer.cs" />
+    <Compile Include="BZip2\BZip2.cs" />
+    <Compile Include="BZip2\BZip2Constants.cs" />
+    <Compile Include="BZip2\BZip2Exception.cs" />
+    <Compile Include="BZip2\BZip2InputStream.cs" />
+    <Compile Include="BZip2\BZip2OutputStream.cs" />
+    <Compile Include="BZip2\SharpZipBaseException.cs" />
+    <Compile Include="Cache.cs" />
+    <Compile Include="CacheItemNode.cs" />
+    <Compile Include="BZip2\Checksums\Adler32.cs" />
+    <Compile Include="BZip2\Checksums\CRC32.cs" />
+    <Compile Include="BZip2\Checksums\IChecksum.cs" />
+    <Compile Include="BZip2\Checksums\StrangeCRC.cs" />
+    <Compile Include="BZip2\Core\FileSystemScanner.cs" />
+    <Compile Include="BZip2\Core\INameTransform.cs" />
+    <Compile Include="BZip2\Core\IScanFilter.cs" />
+    <Compile Include="BZip2\Core\NameFilter.cs" />
+    <Compile Include="BZip2\Core\PathFilter.cs" />
+    <Compile Include="BZip2\Core\StreamUtils.cs" />
+    <Compile Include="BZip2\Core\WindowsPathUtils.cs" />
+    <Compile Include="EditorClassifications.cs" />
+    <Compile Include="FastPixel.cs" />
+    <Compile Include="Graphics3D\VertexNormal.cs" />
+    <Compile Include="Graphics3D\WorldController.cs" />
+    <Compile Include="ImageArchive.cs" />
+    <Compile Include="IPlugin.cs" />
+    <Compile Include="Map.cs" />
+    <Compile Include="nQuant\Box.cs" />
+    <Compile Include="nQuant\ColorData.cs" />
+    <Compile Include="nQuant\CubeCut.cs" />
+    <Compile Include="nQuant\IWuQuantizer.cs" />
+    <Compile Include="nQuant\Lookup.cs" />
+    <Compile Include="nQuant\LookupData.cs" />
+    <Compile Include="nQuant\Pixel.cs" />
+    <Compile Include="nQuant\QuantizationException.cs" />
+    <Compile Include="nQuant\QuantizedPalette.cs" />
+    <Compile Include="nQuant\WuQuantizer.cs" />
+    <Compile Include="nQuant\WuQuantizerBase.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RSImage.cs" />
+    <Compile Include="RSInterface.cs" />
+    <Compile Include="SubArchive.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="nQuant\nQuant.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="nQuant\Nuget\nQuant.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="nQuant\Properties\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
