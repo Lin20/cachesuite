@@ -72,7 +72,7 @@ namespace Cache_Editor_API.Definitions
 			if (modifiedModelColors != null)
 			{
 				for (int i1 = 0; i1 < modifiedModelColors.Length; i1++)
-					model.method476(modifiedModelColors[i1], originalModelColors[i1]);
+					model.SetColor(modifiedModelColors[i1], originalModelColors[i1]);
 
 			}
 			return model;
@@ -140,7 +140,7 @@ namespace Cache_Editor_API.Definitions
 			if (modifiedModelColors != null)
 			{
 				for (int i1 = 0; i1 < modifiedModelColors.Length; i1++)
-					model.method476(modifiedModelColors[i1], originalModelColors[i1]);
+					model.SetColor(modifiedModelColors[i1], originalModelColors[i1]);
 
 			}
 			return model;
@@ -230,9 +230,14 @@ namespace Cache_Editor_API.Definitions
 			Stackable = true;
 		}
 
-		public static RSImage GetModelSprite(int id, int amount, int k)
+		public static RSImage GetModelSprite(int id, int amount, Color selection_color)
 		{
-			Color k_color = Color.FromArgb(k);
+			return GetModelSprite(id, amount, selection_color.ToArgb());
+		}
+
+		public static RSImage GetModelSprite(int id, int amount, int selection_color)
+		{
+			Color k_color = Color.FromArgb(selection_color);
 			ItemDefinition itemDef = GetItem(id);
 			if (itemDef.stackIDs == null)
 				amount = -1;
@@ -246,7 +251,7 @@ namespace Cache_Editor_API.Definitions
 				if (i1 != -1)
 					itemDef = GetItem(i1);
 			}
-			Model model = itemDef.method201(1);
+			Model model = itemDef.GetModel(1);
 			if (model == null)
 				return null;
 			RSImage sprite = null;
@@ -272,59 +277,64 @@ namespace Cache_Editor_API.Definitions
 			DrawingArea.method336(32, 0, 0, 0, 32);
 			Rasterizer.method364();
 			int k3 = itemDef.Zoom;
-			if (k == -1)
+			if (selection_color == -1)
 				k3 = (int)((double)k3 * 1.5D);
-			if (k > 0)
+			if (selection_color > 0)
 				k3 = (int)((double)k3 * 1.04D);
 			int l3 = Rasterizer.SIN[itemDef.RotationX] * k3 >> 16;
 			int i4 = Rasterizer.COS[itemDef.RotationX] * k3 >> 16;
 			model.Render(itemDef.RotationY, itemDef.anInt204, itemDef.RotationX, itemDef.modelOffset1, l3 + model.modelHeight / 2 + itemDef.modelOffset2, i4 + itemDef.modelOffset2);
+			
+			//draw the black outline
 			for (int i5 = 31; i5 >= 0; i5--)
 			{
 				for (int j4 = 31; j4 >= 0; j4--)
-					if (sprite2.Pixels[i5 + j4 * 32].ToArgb() == 0)
-						if (i5 > 0 && sprite2.Pixels[(i5 - 1) + j4 * 32].ToArgb() > 1)
-							sprite2.Pixels[i5 + j4 * 32] = Color.Black;
-						else
-							if (j4 > 0 && sprite2.Pixels[i5 + (j4 - 1) * 32].ToArgb() > 1)
-								sprite2.Pixels[i5 + j4 * 32] = Color.Black;
-							else
-								if (i5 < 31 && sprite2.Pixels[i5 + 1 + j4 * 32].ToArgb() > 1)
-									sprite2.Pixels[i5 + j4 * 32] = Color.Black;
-								else
-									if (j4 < 31 && sprite2.Pixels[i5 + (j4 + 1) * 32].ToArgb() > 1)
-										sprite2.Pixels[i5 + j4 * 32] = Color.Black;
-
+				{
+					if (DrawingArea.pixels[i5 + j4 * 32] == 0)
+					{
+						if (i5 > 0 && DrawingArea.pixels[(i5 - 1) + j4 * 32] > 1)
+							DrawingArea.pixels[i5 + j4 * 32] = 1;
+						else if (j4 > 0 && DrawingArea.pixels[i5 + (j4 - 1) * 32] > 1)
+							DrawingArea.pixels[i5 + j4 * 32] = 1;
+						else if (i5 < 31 && DrawingArea.pixels[i5 + 1 + j4 * 32] > 1)
+							DrawingArea.pixels[i5 + j4 * 32] = 1;
+						else if (j4 < 31 && DrawingArea.pixels[i5 + (j4 + 1) * 32] > 1)
+							DrawingArea.pixels[i5 + j4 * 32] = 1;
+					}
+				}
 			}
 
-			if (k > 0)
+			//draw the selection outline or shadow
+			if (selection_color > 0) //selection outline
 			{
 				for (int j5 = 31; j5 >= 0; j5--)
 				{
 					for (int k4 = 31; k4 >= 0; k4--)
-						if (sprite2.Pixels[j5 + k4 * 32].ToArgb() == 0)
-							if (j5 > 0 && sprite2.Pixels[(j5 - 1) + k4 * 32].ToArgb() == 1)
-								sprite2.Pixels[j5 + k4 * 32] = k_color;
-							else
-								if (k4 > 0 && sprite2.Pixels[j5 + (k4 - 1) * 32].ToArgb() == 1)
-									sprite2.Pixels[j5 + k4 * 32] = k_color;
-								else
-									if (j5 < 31 && sprite2.Pixels[j5 + 1 + k4 * 32].ToArgb() == 1)
-										sprite2.Pixels[j5 + k4 * 32] = k_color;
-									else
-										if (k4 < 31 && sprite2.Pixels[j5 + (k4 + 1) * 32].ToArgb() == 1)
-											sprite2.Pixels[j5 + k4 * 32] = k_color;
-
+					{
+						if (DrawingArea.pixels[j5 + k4 * 32] == 0)
+						{
+							if (j5 > 0 && DrawingArea.pixels[(j5 - 1) + k4 * 32] == 1)
+								DrawingArea.pixels[j5 + k4 * 32] = selection_color;
+							else if (k4 > 0 && DrawingArea.pixels[j5 + (k4 - 1) * 32] == 1)
+								DrawingArea.pixels[j5 + k4 * 32] = selection_color;
+							else if (j5 < 31 && DrawingArea.pixels[j5 + 1 + k4 * 32] == 1)
+								DrawingArea.pixels[j5 + k4 * 32] = selection_color;
+							else if (k4 < 31 && DrawingArea.pixels[j5 + (k4 + 1) * 32] == 1)
+								DrawingArea.pixels[j5 + k4 * 32] = selection_color;
+						}
+					}
 				}
 
 			}
-			else if (k == 0)
+			else if (selection_color == 0) //shadow
 			{
 				for (int k5 = 31; k5 >= 0; k5--)
 				{
 					for (int l4 = 31; l4 >= 0; l4--)
-						if (sprite2.Pixels[k5 + l4 * 32].ToArgb() == 0 && k5 > 0 && l4 > 0 && sprite2.Pixels[(k5 - 1) + (l4 - 1) * 32].ToArgb() > 0)
-							sprite2.Pixels[k5 + l4 * 32] = Color.FromArgb(0x302020);
+					{
+						if (DrawingArea.pixels[k5 + l4 * 32] == 0 && k5 > 0 && l4 > 0 && DrawingArea.pixels[(k5 - 1) + (l4 - 1) * 32] > 0)
+							DrawingArea.pixels[k5 + l4 * 32] = 0x302020;
+					}
 
 				}
 
@@ -354,17 +364,33 @@ namespace Cache_Editor_API.Definitions
 			return sprite2;
 		}
 
-		public Model method201(int i)
+		public int GetModelIndex(int amount)
 		{
-			if (stackIDs != null && i > 1)
+			if (stackIDs != null && amount > 1)
 			{
 				int j = -1;
 				for (int k = 0; k < 10; k++)
-					if (i >= stackAmounts[k] && stackAmounts[k] != 0)
+					if (amount >= stackAmounts[k] && stackAmounts[k] != 0)
 						j = stackIDs[k];
 
 				if (j != -1)
-					return GetItem(j).method201(1);
+					return GetItem(j).ModelIndex;
+			}
+
+			return ModelIndex;
+		}
+
+		public Model GetModel(int amount)
+		{
+			if (stackIDs != null && amount > 1)
+			{
+				int j = -1;
+				for (int k = 0; k < 10; k++)
+					if (amount >= stackAmounts[k] && stackAmounts[k] != 0)
+						j = stackIDs[k];
+
+				if (j != -1)
+					return GetItem(j).GetModel(1);
 			}
 			Model model = Model.LoadModel(LoadedCache, ModelIndex);
 			if (model == null)
@@ -374,7 +400,7 @@ namespace Cache_Editor_API.Definitions
 			if (modifiedModelColors != null)
 			{
 				for (int l = 0; l < modifiedModelColors.Length; l++)
-					model.method476(modifiedModelColors[l], originalModelColors[l]);
+					model.SetColor(modifiedModelColors[l], originalModelColors[l]);
 
 			}
 			model.Light(64 + anInt196, 768 + anInt184, -50, -10, -50, true);
@@ -400,7 +426,7 @@ namespace Cache_Editor_API.Definitions
 			if (modifiedModelColors != null)
 			{
 				for (int l = 0; l < modifiedModelColors.Length; l++)
-					model.method476(modifiedModelColors[l], originalModelColors[l]);
+					model.SetColor(modifiedModelColors[l], originalModelColors[l]);
 
 			}
 			return model;

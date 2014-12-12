@@ -149,6 +149,7 @@ namespace Cache_Editor_API.Graphics3D
 
 		public Model(int i)
 		{
+			ID = i;
 			aBoolean1659 = false;
 			ModelHeader class21 = aModelHeaderArray1661[i];
 			anInt1626 = class21.anInt369;
@@ -1163,7 +1164,7 @@ namespace Cache_Editor_API.Graphics3D
 
 		}
 
-		public void method476(int i, int j)
+		public void SetColor(int i, int j)
 		{
 			for (int k = 0; k < anInt1630; k++)
 				if (anIntArray1640[k] == i)
@@ -1964,6 +1965,7 @@ namespace Cache_Editor_API.Graphics3D
 			return !(i < j1 && i < k1 && i < l1) && (i <= j1 || i <= k1 || i <= l1);
 		}
 
+		public int ID { get; set; }
 		public static Model aModel_1621 = new Model();
 		private static int[] anIntArray1622 = new int[2000];
 		private static int[] anIntArray1623 = new int[2000];
