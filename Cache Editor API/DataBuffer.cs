@@ -22,9 +22,19 @@ namespace Cache_Editor_API
 			return Buffer[Location++];
 		}
 
+		public sbyte ReadSignedByte()
+		{
+			return (sbyte)Buffer[Location++];
+		}
+
 		public int ReadShort()
 		{
 			return (Buffer[Location++] << 8) + Buffer[Location++];
+		}
+
+		public int ReadSignedShort()
+		{
+			return (short)((Buffer[Location++] << 8) + Buffer[Location++]);
 		}
 
 		public int Read3Bytes()
@@ -43,6 +53,20 @@ namespace Cache_Editor_API
 			if (i < 128)
 				return ReadByte() - 64;
 			return ReadShort() - 49152;
+		}
+
+		public string ReadString()
+		{
+			StringBuilder sb = new StringBuilder();
+			while (Location < Buffer.Length)
+			{
+				byte b = Buffer[Location++];
+				if (b == 0xA)
+					break;
+				sb.Append((char)b);
+			}
+
+			return sb.ToString();
 		}
 
 		public void WriteByte(byte b)

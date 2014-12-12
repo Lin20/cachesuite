@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cache_Editor_API.Graphics3D;
 
 namespace Cache_Editor_API
 {
 	public class RSInterface
 	{
-
-		/*public void swapInventoryItems(int i, int j)
+		public void swapInventoryItems(int i, int j)
 		{
 			int k = inv[i];
 			inv[i] = inv[j];
@@ -19,107 +19,105 @@ namespace Cache_Editor_API
 			invStackSizes[j] = k;
 		}
 
-		public static void unpack(StreamLoader streamLoader, TextDrawingArea[] textDrawingAreas, StreamLoader streamLoader_1)
+		public static void unpack(DataBuffer stream, RSFont[] textDrawingAreas, SubArchive streamLoader_1)
 		{
-			aMRUNodes_238 = new MRUNodes(50000);
-			Stream stream = new Stream(streamLoader.getDataForName("data"));
 			int i = -1;
-			int j = stream.readUnsignedWord();
+			int j = stream.ReadShort();
 			interfaceCache = new RSInterface[j];
-			while (stream.currentOffset < stream.buffer.Length)
+			while (stream.Location < stream.Buffer.Length)
 			{
-				int k = stream.readUnsignedWord();
+				int k = stream.ReadShort();
 				if (k == 65535)
 				{
-					i = stream.readUnsignedWord();
-					k = stream.readUnsignedWord();
+					i = stream.ReadShort();
+					k = stream.ReadShort();
 				}
 				RSInterface rsInterface = interfaceCache[k] = new RSInterface();
 				rsInterface.id = k;
 				rsInterface.parentID = i;
-				rsInterface.type = stream.readUnsignedByte();
-				rsInterface.atActionType = stream.readUnsignedByte();
-				rsInterface.anInt214 = stream.readUnsignedWord();
-				rsInterface.width = stream.readUnsignedWord();
-				rsInterface.height = stream.readUnsignedWord();
-				rsInterface.aByte254 = (byte)stream.readUnsignedByte();
-				rsInterface.anInt230 = stream.readUnsignedByte();
+				rsInterface.type = stream.ReadByte();
+				rsInterface.atActionType = stream.ReadByte();
+				rsInterface.anInt214 = stream.ReadShort();
+				rsInterface.width = stream.ReadShort();
+				rsInterface.height = stream.ReadShort();
+				rsInterface.aByte254 = (byte)stream.ReadByte();
+				rsInterface.anInt230 = stream.ReadByte();
 				if (rsInterface.anInt230 != 0)
-					rsInterface.anInt230 = (rsInterface.anInt230 - 1 << 8) + stream.readUnsignedByte();
+					rsInterface.anInt230 = (rsInterface.anInt230 - 1 << 8) + stream.ReadByte();
 				else
 					rsInterface.anInt230 = -1;
-				int i1 = stream.readUnsignedByte();
+				int i1 = stream.ReadByte();
 				if (i1 > 0)
 				{
 					rsInterface.anIntArray245 = new int[i1];
 					rsInterface.anIntArray212 = new int[i1];
 					for (int j1 = 0; j1 < i1; j1++)
 					{
-						rsInterface.anIntArray245[j1] = stream.readUnsignedByte();
-						rsInterface.anIntArray212[j1] = stream.readUnsignedWord();
+						rsInterface.anIntArray245[j1] = stream.ReadByte();
+						rsInterface.anIntArray212[j1] = stream.ReadShort();
 					}
 
 				}
-				int k1 = stream.readUnsignedByte();
+				int k1 = stream.ReadByte();
 				if (k1 > 0)
 				{
 					rsInterface.valueIndexArray = new int[k1][];
 					for (int l1 = 0; l1 < k1; l1++)
 					{
-						int i3 = stream.readUnsignedWord();
+						int i3 = stream.ReadShort();
 						rsInterface.valueIndexArray[l1] = new int[i3];
 						for (int l4 = 0; l4 < i3; l4++)
-							rsInterface.valueIndexArray[l1][l4] = stream.readUnsignedWord();
+							rsInterface.valueIndexArray[l1][l4] = stream.ReadShort();
 
 					}
 
 				}
 				if (rsInterface.type == 0)
 				{
-					rsInterface.scrollMax = stream.readUnsignedWord();
-					rsInterface.aBoolean266 = stream.readUnsignedByte() == 1;
-					int i2 = stream.readUnsignedWord();
+					rsInterface.scrollMax = stream.ReadShort();
+					rsInterface.aBoolean266 = stream.ReadByte() == 1;
+					int i2 = stream.ReadShort();
 					rsInterface.children = new int[i2];
 					rsInterface.childX = new int[i2];
 					rsInterface.childY = new int[i2];
 					for (int j3 = 0; j3 < i2; j3++)
 					{
-						rsInterface.children[j3] = stream.readUnsignedWord();
-						rsInterface.childX[j3] = stream.readSignedWord();
-						rsInterface.childY[j3] = stream.readSignedWord();
+						rsInterface.children[j3] = stream.ReadShort();
+						rsInterface.childX[j3] = stream.ReadSignedShort();
+						rsInterface.childY[j3] = stream.ReadSignedShort();
 					}
 
 				}
 				if (rsInterface.type == 1)
 				{
-					stream.readUnsignedWord();
-					stream.readUnsignedByte();
+					stream.ReadShort();
+					stream.ReadByte();
 				}
 				if (rsInterface.type == 2)
 				{
 					rsInterface.inv = new int[rsInterface.width * rsInterface.height];
 					rsInterface.invStackSizes = new int[rsInterface.width * rsInterface.height];
-					rsInterface.aBoolean259 = stream.readUnsignedByte() == 1;
-					rsInterface.isInventoryInterface = stream.readUnsignedByte() == 1;
-					rsInterface.usableItemInterface = stream.readUnsignedByte() == 1;
-					rsInterface.aBoolean235 = stream.readUnsignedByte() == 1;
-					rsInterface.invSpritePadX = stream.readUnsignedByte();
-					rsInterface.invSpritePadY = stream.readUnsignedByte();
+					rsInterface.aBoolean259 = stream.ReadByte() == 1;
+					rsInterface.isInventoryInterface = stream.ReadByte() == 1;
+					rsInterface.usableItemInterface = stream.ReadByte() == 1;
+					rsInterface.aBoolean235 = stream.ReadByte() == 1;
+					rsInterface.invSpritePadX = stream.ReadByte();
+					rsInterface.invSpritePadY = stream.ReadByte();
 					rsInterface.spritesX = new int[20];
 					rsInterface.spritesY = new int[20];
-					rsInterface.sprites = new Sprite[20];
+					rsInterface.sprites = new RSImage[20];
 					for (int j2 = 0; j2 < 20; j2++)
 					{
-						int k3 = stream.readUnsignedByte();
+						int k3 = stream.ReadByte();
 						if (k3 == 1)
 						{
-							rsInterface.spritesX[j2] = stream.readSignedWord();
-							rsInterface.spritesY[j2] = stream.readSignedWord();
-							String s1 = stream.readString();
+							rsInterface.spritesX[j2] = stream.ReadSignedShort();
+							rsInterface.spritesY[j2] = stream.ReadSignedShort();
+							String s1 = stream.ReadString();
 							if (streamLoader_1 != null && s1.Length > 0)
 							{
 								int i5 = s1.LastIndexOf(",");
-								rsInterface.sprites[j2] = method207(int.Parse(s1.Substring(i5 + 1)), streamLoader_1, s1.Substring(0, i5));
+								rsInterface.sprites[j2] = LoadSprite(int.Parse(s1.Substring(i5 + 1)), streamLoader_1, s1.Substring(0, i5));
 							}
 						}
 					}
@@ -127,95 +125,95 @@ namespace Cache_Editor_API
 					rsInterface.actions = new String[5];
 					for (int l3 = 0; l3 < 5; l3++)
 					{
-						rsInterface.actions[l3] = stream.readString();
+						rsInterface.actions[l3] = stream.ReadString();
 						if (rsInterface.actions[l3].Length == 0)
 							rsInterface.actions[l3] = null;
 					}
 
 				}
 				if (rsInterface.type == 3)
-					rsInterface.aBoolean227 = stream.readUnsignedByte() == 1;
+					rsInterface.aBoolean227 = stream.ReadByte() == 1;
 				if (rsInterface.type == 4 || rsInterface.type == 1)
 				{
-					rsInterface.aBoolean223 = stream.readUnsignedByte() == 1;
-					int k2 = stream.readUnsignedByte();
+					rsInterface.aBoolean223 = stream.ReadByte() == 1;
+					int k2 = stream.ReadByte();
 					if (textDrawingAreas != null)
 						rsInterface.textDrawingAreas = textDrawingAreas[k2];
-					rsInterface.aBoolean268 = stream.readUnsignedByte() == 1;
+					rsInterface.aBoolean268 = stream.ReadByte() == 1;
 				}
 				if (rsInterface.type == 4)
 				{
-					rsInterface.message = stream.readString();
-					rsInterface.aString228 = stream.readString();
+					rsInterface.message = stream.ReadString();
+					rsInterface.aString228 = stream.ReadString();
 				}
 				if (rsInterface.type == 1 || rsInterface.type == 3 || rsInterface.type == 4)
-					rsInterface.textColor = stream.readDWord();
+					rsInterface.textColor = stream.ReadInteger();
 				if (rsInterface.type == 3 || rsInterface.type == 4)
 				{
-					rsInterface.anInt219 = stream.readDWord();
-					rsInterface.anInt216 = stream.readDWord();
-					rsInterface.anInt239 = stream.readDWord();
+					rsInterface.anInt219 = stream.ReadInteger();
+					rsInterface.anInt216 = stream.ReadInteger();
+					rsInterface.anInt239 = stream.ReadInteger();
 				}
 				if (rsInterface.type == 5)
 				{
-					String s = stream.readString();
+					String s = stream.ReadString();
 					if (streamLoader_1 != null && s.Length > 0)
 					{
 						int i4 = s.LastIndexOf(",");
-						rsInterface.sprite1 = method207(int.Parse(s.Substring(i4 + 1)), streamLoader_1, s.Substring(0, i4));
+						rsInterface.sprite1 = LoadSprite(int.Parse(s.Substring(i4 + 1)), streamLoader_1, s.Substring(0, i4));
 					}
-					s = stream.readString();
+					s = stream.ReadString();
 					if (streamLoader_1 != null && s.Length > 0)
 					{
 						int j4 = s.LastIndexOf(",");
-						rsInterface.sprite2 = method207(int.Parse(s.Substring(j4 + 1)), streamLoader_1, s.Substring(0, j4));
+						rsInterface.sprite2 = LoadSprite(int.Parse(s.Substring(j4 + 1)), streamLoader_1, s.Substring(0, j4));
 					}
 				}
 				if (rsInterface.type == 6)
 				{
-					int l = stream.readUnsignedByte();
+					int l = stream.ReadByte();
 					if (l != 0)
 					{
 						rsInterface.anInt233 = 1;
-						rsInterface.mediaID = (l - 1 << 8) + stream.readUnsignedByte();
+						rsInterface.mediaID = (l - 1 << 8) + stream.ReadByte();
 					}
-					l = stream.readUnsignedByte();
+					l = stream.ReadByte();
 					if (l != 0)
 					{
 						rsInterface.anInt255 = 1;
-						rsInterface.anInt256 = (l - 1 << 8) + stream.readUnsignedByte();
+						rsInterface.anInt256 = (l - 1 << 8) + stream.ReadByte();
 					}
-					l = stream.readUnsignedByte();
+					l = stream.ReadByte();
 					if (l != 0)
-						rsInterface.anInt257 = (l - 1 << 8) + stream.readUnsignedByte();
+						rsInterface.anInt257 = (l - 1 << 8) + stream.ReadByte();
 					else
 						rsInterface.anInt257 = -1;
-					l = stream.readUnsignedByte();
+					l = stream.ReadByte();
 					if (l != 0)
-						rsInterface.anInt258 = (l - 1 << 8) + stream.readUnsignedByte();
+						rsInterface.anInt258 = (l - 1 << 8) + stream.ReadByte();
 					else
 						rsInterface.anInt258 = -1;
-					rsInterface.anInt269 = stream.readUnsignedWord();
-					rsInterface.anInt270 = stream.readUnsignedWord();
-					rsInterface.anInt271 = stream.readUnsignedWord();
+					rsInterface.anInt269 = stream.ReadShort();
+					rsInterface.anInt270 = stream.ReadShort();
+					rsInterface.anInt271 = stream.ReadShort();
 				}
 				if (rsInterface.type == 7)
 				{
 					rsInterface.inv = new int[rsInterface.width * rsInterface.height];
 					rsInterface.invStackSizes = new int[rsInterface.width * rsInterface.height];
-					rsInterface.aBoolean223 = stream.readUnsignedByte() == 1;
-					int l2 = stream.readUnsignedByte();
+					rsInterface.aBoolean223 = stream.ReadByte() == 1;
+					int l2 = stream.ReadByte();
 					if (textDrawingAreas != null)
 						rsInterface.textDrawingAreas = textDrawingAreas[l2];
-					rsInterface.aBoolean268 = stream.readUnsignedByte() == 1;
-					rsInterface.textColor = stream.readDWord();
-					rsInterface.invSpritePadX = stream.readSignedWord();
-					rsInterface.invSpritePadY = stream.readSignedWord();
-					rsInterface.isInventoryInterface = stream.readUnsignedByte() == 1;
+					rsInterface.aBoolean268 = stream.ReadByte() == 1;
+					rsInterface.textColor = stream.ReadInteger();
+					rsInterface.invSpritePadX = stream.ReadSignedShort();
+					rsInterface.invSpritePadY = stream.ReadSignedShort();
+					rsInterface.isInventoryInterface = stream.ReadByte() == 1;
 					rsInterface.actions = new String[5];
 					for (int k4 = 0; k4 < 5; k4++)
 					{
-						rsInterface.actions[k4] = stream.readString();
+						rsInterface.actions[k4] = stream.ReadString();
 						if (rsInterface.actions[k4].Length == 0)
 							rsInterface.actions[k4] = null;
 					}
@@ -223,17 +221,17 @@ namespace Cache_Editor_API
 				}
 				if (rsInterface.atActionType == 2 || rsInterface.type == 2)
 				{
-					rsInterface.selectedActionName = stream.readString();
-					rsInterface.spellName = stream.readString();
-					rsInterface.spellUsableOn = stream.readUnsignedWord();
+					rsInterface.selectedActionName = stream.ReadString();
+					rsInterface.spellName = stream.ReadString();
+					rsInterface.spellUsableOn = stream.ReadShort();
 				}
 
 				if (rsInterface.type == 8)
-					rsInterface.message = stream.readString();
+					rsInterface.message = stream.ReadString();
 
 				if (rsInterface.atActionType == 1 || rsInterface.atActionType == 4 || rsInterface.atActionType == 5 || rsInterface.atActionType == 6)
 				{
-					rsInterface.tooltip = stream.readString();
+					rsInterface.tooltip = stream.ReadString();
 					if (rsInterface.tooltip.Length == 0)
 					{
 						if (rsInterface.atActionType == 1)
@@ -246,13 +244,10 @@ namespace Cache_Editor_API
 							rsInterface.tooltip = "Continue";
 					}
 				}
-
-				//aryan	Bot.notifyInterface(rsInterface);
 			}
-			aMRUNodes_238 = null;
 		}
 
-		private Model method206(int i, int j)
+		/*private Model method206(int i, int j)
 		{
 			Model model = (Model)aMRUNodes_264.insertFromCache((i << 16) + j);
 			if (model != null)
@@ -270,27 +265,15 @@ namespace Cache_Editor_API
 			if (model != null)
 				aMRUNodes_264.removeFromCache(model, (i << 16) + j);
 			return model;
-		}
+		}*/
 
-		private static Sprite method207(int i, StreamLoader streamLoader, String s)
+		private static RSImage LoadSprite(int i, SubArchive sub_archive, String s)
 		{
-			long l = (TextClass.method585(s) << 8) + (long)i;
-			Sprite sprite = (Sprite)aMRUNodes_238.insertFromCache(l);
-			if (sprite != null)
-				return sprite;
-			try
-			{
-				sprite = new Sprite(streamLoader, s, i);
-				aMRUNodes_238.removeFromCache(sprite, l);
-			}
-			catch (Exception)
-			{
-				return null;
-			}
-			return sprite;
+			//TODO: Caching	
+			return new RSImage(sub_archive, s, i);
 		}
 
-		public static void method208(bool flag, Model model)
+		/*public static void method208(bool flag, Model model)
 		{
 			int i = 0;//was parameter
 			int j = 5;//was parameter
@@ -299,9 +282,9 @@ namespace Cache_Editor_API
 			aMRUNodes_264.unlinkAll();
 			if (model != null && j != 4)
 				aMRUNodes_264.removeFromCache(model, (j << 16) + i);
-		}
+		}*/
 
-		public Model method209(int j, int k, bool flag)
+		/*public Model method209(int j, int k, bool flag)
 		{
 			Model model;
 			if (flag)
@@ -321,15 +304,15 @@ namespace Cache_Editor_API
 				model_1.method470(j);
 			model_1.method479(64, 768, -50, -10, -50, true);
 			return model_1;
-		}
+		}*/
 
 		public RSInterface()
 		{
 		}
 
-		public Sprite sprite1;
+		public RSImage sprite1;
 		public int anInt208;
-		public Sprite[] sprites;
+		public RSImage[] sprites;
 		public static RSInterface[] interfaceCache;
 		public int[] anIntArray212;
 		public int anInt214;
@@ -355,12 +338,11 @@ namespace Cache_Editor_API
 		public bool aBoolean235;
 		public int parentID;
 		public int spellUsableOn;
-		private static MRUNodes aMRUNodes_238;
 		public int anInt239;
 		public int[] children;
 		public int[] childX;
 		public bool usableItemInterface;
-		public TextDrawingArea textDrawingAreas;
+		public RSFont textDrawingAreas;
 		public int invSpritePadY;
 		public int[] anIntArray245;
 		public int anInt246;
@@ -376,11 +358,10 @@ namespace Cache_Editor_API
 		public int anInt257;
 		public int anInt258;
 		public bool aBoolean259;
-		public Sprite sprite2;
+		public RSImage sprite2;
 		public int scrollMax;
 		public int type;
 		public int anInt263;
-		private static MRUNodes aMRUNodes_264 = new MRUNodes(30);
 		public int anInt265;
 		public bool aBoolean266;
 		public int height;
@@ -388,7 +369,7 @@ namespace Cache_Editor_API
 		public int anInt269;
 		public int anInt270;
 		public int anInt271;
-		public int[] childY;*/
+		public int[] childY;
 
 	}
 }

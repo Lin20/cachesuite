@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Definitions\ItemDefinition.cs" />
     <Compile Include="Graphics3D\Animable.cs" />
     <Compile Include="Graphics3D\Class40.cs" />
     <Compile Include="Graphics3D\Class43.cs" />
@@ -98,6 +99,7 @@
     <Compile Include="nQuant\WuQuantizer.cs" />
     <Compile Include="nQuant\WuQuantizerBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RSFont.cs" />
     <Compile Include="RSImage.cs" />
     <Compile Include="RSInterface.cs" />
     <Compile Include="SubArchive.cs" />

@@ -109,12 +109,12 @@ namespace Cache_Editor_API.Graphics3D
 			aModelHeaderArray1661[j] = null;
 		}
 
-		/*public static Model LoadModel(int j)
+		public static Model LoadModel(Cache cache, int j)
 		{
-			if (aModelHeaderArray1661 == null)
-				return null;
-			ModelHeader class21 = aModelHeaderArray1661[j];
-			if (class21 == null)
+			//ModelHeader class21 = aModelHeaderArray1661[j];
+			LoadModel(cache.Archives[1].ExtractFile(j), j);
+			return new Model(j);
+			/*if (class21 == null)
 			{
 				aOnDemandFetcherParent_1662.method548(j);
 				return null;
@@ -122,12 +122,13 @@ namespace Cache_Editor_API.Graphics3D
 			else
 			{
 				return new Model(j);
-			}
+			}*/
 		}
 
 		public static bool method463(int i)
 		{
-			if (aModelHeaderArray1661 == null)
+			return false;
+			/*if (aModelHeaderArray1661 == null)
 				return false;
 			ModelHeader class21 = aModelHeaderArray1661[i];
 			if (class21 == null)
@@ -138,8 +139,8 @@ namespace Cache_Editor_API.Graphics3D
 			else
 			{
 				return true;
-			}
-		}*/
+			}*/
+		}
 
 		public Model()
 		{

@@ -31,6 +31,11 @@ namespace Cache_Editor_API
 		{
 		}
 
+		public RSImage(SubArchive archive, string file, int sprite_index = 0)
+			: this(archive, archive.ExtractFile(file), sprite_index)
+		{
+		}
+
 		public RSImage(SubArchive archive, DataBuffer image_data, int sprite_index = 0)
 		{
 			try
@@ -117,6 +122,15 @@ namespace Cache_Editor_API
 				ex = e;
 				Pixels = null;
 			}
+		}
+
+		public RSImage(int width, int height)
+		{
+			Pixels = new Color[width * height];
+			Width = WholeWidth = width;
+			Height = WholeHeight = height;
+			XOffset = 0;
+			YOffset = 0;
 		}
 
 		public Bitmap GenerateBitmap()
@@ -233,6 +247,18 @@ namespace Cache_Editor_API
 			Height = WholeHeight;
 			XOffset = 0;
 			YOffset = 0;
+		}
+
+		public void SetPixels(int[] pixels)
+		{
+			for (int x = 0; x < Width; x++)
+			{
+				for (int y = 0; y < Height; y++)
+				{
+					if (pixels[x + y * Width] != 0)
+						Pixels[x + y * Width] = Color.FromArgb((int)((uint)pixels[x + y * Width] | 0xFF000000));
+				}
+			}
 		}
 	}
 }

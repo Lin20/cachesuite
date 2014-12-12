@@ -9,18 +9,38 @@ namespace Cache_Editor_API.Graphics3D
 {
 	public class DrawingArea
 	{
-
-		public static void initDrawingArea(int i, int j, int[] ai)
+		public static void initDrawingArea(int i, int j, int[] pixels)
 		{
-			pixels = ai;
+			DrawingArea.pixels = pixels;
 			width = j;
 			height = i;
-			if (bmp == null || bmp.Width != width || bmp.Height != height)
+			if (pixels != null && i > 0 && j > 0)
 			{
-				bmp = new Bitmap(width, height);
-				fp = new FastPixel(bmp);
+				if (bmp == null || bmp.Width != width || bmp.Height != height)
+				{
+					bmp = new Bitmap(width, height);
+					fp = new FastPixel(bmp);
+				}
 			}
 			setDrawingArea(i, 0, j, 0);
+		}
+
+		public static void initDrawingArea(int h, int w, Color[] _pixels)
+		{
+			pixels = new int[_pixels.Length];
+			for (int i = 0; i < pixels.Length; i++)
+				pixels[i] = _pixels[i].ToArgb();
+			width = w;
+			height = h;
+			if (pixels != null && h > 0 && w > 0)
+			{
+				if (bmp == null || bmp.Width != width || bmp.Height != height)
+				{
+					bmp = new Bitmap(width, height);
+					fp = new FastPixel(bmp);
+				}
+			}
+			setDrawingArea(h, 0, w, 0);
 		}
 
 		public static void defaultDrawingAreaSize()
@@ -231,6 +251,95 @@ namespace Cache_Editor_API.Graphics3D
 				int k3 = ((k1 + j2 >> 8) << 16) + ((l1 + k2 >> 8) << 8) + (i2 + l2 >> 8);
 				pixels[i3] = k3;
 				i3 += width;
+			}
+
+		}
+
+		public static void DrawRSImage(RSImage s, int x, int y)
+		{
+			x += s.XOffset;
+			y += s.YOffset;
+			int l = x + y * DrawingArea.width;
+			int i1 = 0;
+			int j1 = s.Height;
+			int k1 = s.Width;
+			int l1 = DrawingArea.width - k1;
+			int i2 = 0;
+			if (y < DrawingArea.topY)
+			{
+				int j2 = DrawingArea.topY - y;
+				j1 -= j2;
+				y = DrawingArea.topY;
+				i1 += j2 * k1;
+				l += j2 * DrawingArea.width;
+			}
+			if (y + j1 > DrawingArea.bottomY)
+				j1 -= (y + j1) - DrawingArea.bottomY;
+			if (x < DrawingArea.topX)
+			{
+				int k2 = DrawingArea.topX - x;
+				k1 -= k2;
+				x = DrawingArea.topX;
+				i1 += k2;
+				l += k2;
+				i2 += k2;
+				l1 += k2;
+			}
+			if (x + k1 > DrawingArea.bottomX)
+			{
+				int l2 = (x + k1) - DrawingArea.bottomX;
+				k1 -= l2;
+				i2 += l2;
+				l1 += l2;
+			}
+			if (!(k1 <= 0 || j1 <= 0))
+			{
+				DrawPixels(s.Pixels, i1, l, k1, j1, l1, i2);
+			}
+		}
+
+		public static void DrawPixels(Color[] ai1, int j, int k, int l, int i1, int j1, int k1)
+		{
+			int i;//was parameter
+			int l1 = -(l >> 2);
+			l = -(l & 3);
+			for (int i2 = -i1; i2 < 0; i2++)
+			{
+				for (int j2 = l1; j2 < 0; j2++)
+				{
+					i = ai1[j++].ToArgb();
+					if (i != 0)
+						pixels[k++] = (int)((uint)i | 0xFF000000);
+					else
+						k++;
+					i = ai1[j++].ToArgb();
+					if (i != 0)
+						pixels[k++] = (int)((uint)i | 0xFF000000);
+					else
+						k++;
+					i = ai1[j++].ToArgb();
+					if (i != 0)
+						pixels[k++] = (int)((uint)i | 0xFF000000);
+					else
+						k++;
+					i = ai1[j++].ToArgb();
+					if (i != 0)
+						pixels[k++] = (int)((uint)i | 0xFF000000);
+					else
+						k++;
+				}
+
+				for (int k2 = l; k2 < 0; k2++)
+				{
+					i = ai1[j++].ToArgb();
+					if (i != 0)
+						pixels[k++] = (int)((uint)i | 0xFF000000);
+					else
+						k++;
+				}
+
+				k += j1;
+				j += k1;
 			}
 
 		}
