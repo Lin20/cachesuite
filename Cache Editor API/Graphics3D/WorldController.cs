@@ -708,8 +708,8 @@ namespace Cache_Editor_API.Graphics3D
 			anInt488++;
 			int l = 0;
 			int[] ai = model_1.vertices_x;
-			int i1 = model_1.anInt1626;
-			for (int j1 = 0; j1 < model.anInt1626; j1++)
+			int i1 = model_1.VertexCount;
+			for (int j1 = 0; j1 < model.VertexCount; j1++)
 			{
 				VertexNormal class33 = model.aVertexNormalArray1425[j1];
 				VertexNormal class33_1 = model.aVertexNormalArray1660[j1];
@@ -752,11 +752,11 @@ namespace Cache_Editor_API.Graphics3D
 
 			if (l < 3 || !flag)
 				return;
-			for (int k1 = 0; k1 < model.anInt1630; k1++)
+			for (int k1 = 0; k1 < model.TriangleCount; k1++)
 				if (anIntArray486[model.anIntArray1631[k1]] == anInt488 && anIntArray486[model.anIntArray1632[k1]] == anInt488 && anIntArray486[model.anIntArray1633[k1]] == anInt488)
 					model.anIntArray1637[k1] = -1;
 
-			for (int l1 = 0; l1 < model_1.anInt1630; l1++)
+			for (int l1 = 0; l1 < model_1.TriangleCount; l1++)
 				if (anIntArray487[model_1.anIntArray1631[l1]] == anInt488 && anIntArray487[model_1.anIntArray1632[l1]] == anInt488 && anIntArray487[model_1.anIntArray1633[l1]] == anInt488)
 					model_1.anIntArray1637[l1] = -1;
 

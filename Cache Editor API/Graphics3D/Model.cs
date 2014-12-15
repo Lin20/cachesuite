@@ -112,17 +112,15 @@ namespace Cache_Editor_API.Graphics3D
 		public static Model LoadModel(Cache cache, int j)
 		{
 			//ModelHeader class21 = aModelHeaderArray1661[j];
-			LoadModel(cache.Archives[1].ExtractFile(j), j);
-			return new Model(j);
-			/*if (class21 == null)
+			try
 			{
-				aOnDemandFetcherParent_1662.method548(j);
+				LoadModel(cache.Archives[1].ExtractFile(j), j);
+			}
+			catch (Exception)
+			{
 				return null;
 			}
-			else
-			{
-				return new Model(j);
-			}*/
+			return new Model(j);
 		}
 
 		public static bool method463(int i)
@@ -152,31 +150,31 @@ namespace Cache_Editor_API.Graphics3D
 			ID = i;
 			aBoolean1659 = false;
 			ModelHeader class21 = aModelHeaderArray1661[i];
-			anInt1626 = class21.anInt369;
-			anInt1630 = class21.anInt370;
+			VertexCount = class21.anInt369;
+			TriangleCount = class21.anInt370;
 			anInt1642 = class21.anInt371;
-			vertices_x = new int[anInt1626];
-			vertices_y = new int[anInt1626];
-			vertices_z = new int[anInt1626];
-			anIntArray1631 = new int[anInt1630];
-			anIntArray1632 = new int[anInt1630];
-			anIntArray1633 = new int[anInt1630];
+			vertices_x = new int[VertexCount];
+			vertices_y = new int[VertexCount];
+			vertices_z = new int[VertexCount];
+			anIntArray1631 = new int[TriangleCount];
+			anIntArray1632 = new int[TriangleCount];
+			anIntArray1633 = new int[TriangleCount];
 			anIntArray1643 = new int[anInt1642];
 			anIntArray1644 = new int[anInt1642];
 			anIntArray1645 = new int[anInt1642];
 			if (class21.anInt376 >= 0)
-				anIntArray1655 = new int[anInt1626];
+				anIntArray1655 = new int[VertexCount];
 			if (class21.anInt380 >= 0)
-				anIntArray1637 = new int[anInt1630];
+				anIntArray1637 = new int[TriangleCount];
 			if (class21.anInt381 >= 0)
-				anIntArray1638 = new int[anInt1630];
+				anIntArray1638 = new int[TriangleCount];
 			else
 				anInt1641 = -class21.anInt381 - 1;
 			if (class21.anInt382 >= 0)
-				anIntArray1639 = new int[anInt1630];
+				anIntArray1639 = new int[TriangleCount];
 			if (class21.anInt383 >= 0)
-				anIntArray1656 = new int[anInt1630];
-			anIntArray1640 = new int[anInt1630];
+				anIntArray1656 = new int[TriangleCount];
+			anIntArray1640 = new int[TriangleCount];
 			DataBuffer stream = new DataBuffer(class21.aByteArray368);
 			stream.Location = class21.anInt372;
 			DataBuffer stream_1 = new DataBuffer(class21.aByteArray368);
@@ -190,7 +188,7 @@ namespace Cache_Editor_API.Graphics3D
 			int k = 0;
 			int l = 0;
 			int i1 = 0;
-			for (int j1 = 0; j1 < anInt1626; j1++)
+			for (int j1 = 0; j1 < VertexCount; j1++)
 			{
 				int k1 = stream.ReadByte();
 				int i2 = 0;
@@ -217,7 +215,7 @@ namespace Cache_Editor_API.Graphics3D
 			stream_2.Location = class21.anInt381;
 			stream_3.Location = class21.anInt382;
 			stream_4.Location = class21.anInt383;
-			for (int l1 = 0; l1 < anInt1630; l1++)
+			for (int l1 = 0; l1 < TriangleCount; l1++)
 			{
 				anIntArray1640[l1] = stream.ReadShort();
 				if (anIntArray1637 != null)
@@ -236,7 +234,7 @@ namespace Cache_Editor_API.Graphics3D
 			int l2 = 0;
 			int j3 = 0;
 			int k3 = 0;
-			for (int l3 = 0; l3 < anInt1630; l3++)
+			for (int l3 = 0; l3 < TriangleCount; l3++)
 			{
 				int i4 = stream_1.ReadByte();
 				if (i4 == 1)
@@ -299,8 +297,8 @@ namespace Cache_Editor_API.Graphics3D
 			bool flag1 = false;
 			bool flag2 = false;
 			bool flag3 = false;
-			anInt1626 = 0;
-			anInt1630 = 0;
+			VertexCount = 0;
+			TriangleCount = 0;
 			anInt1642 = 0;
 			anInt1641 = -1;
 			for (int k = 0; k < i; k++)
@@ -308,8 +306,8 @@ namespace Cache_Editor_API.Graphics3D
 				Model model = aclass30_sub2_sub4_sub6s[k];
 				if (model != null)
 				{
-					anInt1626 += model.anInt1626;
-					anInt1630 += model.anInt1630;
+					VertexCount += model.VertexCount;
+					TriangleCount += model.TriangleCount;
 					anInt1642 += model.anInt1642;
 					flag |= model.anIntArray1637 != null;
 					if (model.anIntArray1638 != null)
@@ -328,27 +326,27 @@ namespace Cache_Editor_API.Graphics3D
 				}
 			}
 
-			vertices_x = new int[anInt1626];
-			vertices_y = new int[anInt1626];
-			vertices_z = new int[anInt1626];
-			anIntArray1655 = new int[anInt1626];
-			anIntArray1631 = new int[anInt1630];
-			anIntArray1632 = new int[anInt1630];
-			anIntArray1633 = new int[anInt1630];
+			vertices_x = new int[VertexCount];
+			vertices_y = new int[VertexCount];
+			vertices_z = new int[VertexCount];
+			anIntArray1655 = new int[VertexCount];
+			anIntArray1631 = new int[TriangleCount];
+			anIntArray1632 = new int[TriangleCount];
+			anIntArray1633 = new int[TriangleCount];
 			anIntArray1643 = new int[anInt1642];
 			anIntArray1644 = new int[anInt1642];
 			anIntArray1645 = new int[anInt1642];
 			if (flag)
-				anIntArray1637 = new int[anInt1630];
+				anIntArray1637 = new int[TriangleCount];
 			if (flag1)
-				anIntArray1638 = new int[anInt1630];
+				anIntArray1638 = new int[TriangleCount];
 			if (flag2)
-				anIntArray1639 = new int[anInt1630];
+				anIntArray1639 = new int[TriangleCount];
 			if (flag3)
-				anIntArray1656 = new int[anInt1630];
-			anIntArray1640 = new int[anInt1630];
-			anInt1626 = 0;
-			anInt1630 = 0;
+				anIntArray1656 = new int[TriangleCount];
+			anIntArray1640 = new int[TriangleCount];
+			VertexCount = 0;
+			TriangleCount = 0;
 			anInt1642 = 0;
 			int l = 0;
 			for (int i1 = 0; i1 < i; i1++)
@@ -356,37 +354,37 @@ namespace Cache_Editor_API.Graphics3D
 				Model model_1 = aclass30_sub2_sub4_sub6s[i1];
 				if (model_1 != null)
 				{
-					for (int j1 = 0; j1 < model_1.anInt1630; j1++)
+					for (int j1 = 0; j1 < model_1.TriangleCount; j1++)
 					{
 						if (flag)
 							if (model_1.anIntArray1637 == null)
 							{
-								anIntArray1637[anInt1630] = 0;
+								anIntArray1637[TriangleCount] = 0;
 							}
 							else
 							{
 								int k1 = model_1.anIntArray1637[j1];
 								if ((k1 & 2) == 2)
 									k1 += l << 2;
-								anIntArray1637[anInt1630] = k1;
+								anIntArray1637[TriangleCount] = k1;
 							}
 						if (flag1)
 							if (model_1.anIntArray1638 == null)
-								anIntArray1638[anInt1630] = model_1.anInt1641;
+								anIntArray1638[TriangleCount] = model_1.anInt1641;
 							else
-								anIntArray1638[anInt1630] = model_1.anIntArray1638[j1];
+								anIntArray1638[TriangleCount] = model_1.anIntArray1638[j1];
 						if (flag2)
 							if (model_1.anIntArray1639 == null)
-								anIntArray1639[anInt1630] = 0;
+								anIntArray1639[TriangleCount] = 0;
 							else
-								anIntArray1639[anInt1630] = model_1.anIntArray1639[j1];
+								anIntArray1639[TriangleCount] = model_1.anIntArray1639[j1];
 						if (flag3 && model_1.anIntArray1656 != null)
-							anIntArray1656[anInt1630] = model_1.anIntArray1656[j1];
-						anIntArray1640[anInt1630] = model_1.anIntArray1640[j1];
-						anIntArray1631[anInt1630] = method465(model_1, model_1.anIntArray1631[j1]);
-						anIntArray1632[anInt1630] = method465(model_1, model_1.anIntArray1632[j1]);
-						anIntArray1633[anInt1630] = method465(model_1, model_1.anIntArray1633[j1]);
-						anInt1630++;
+							anIntArray1656[TriangleCount] = model_1.anIntArray1656[j1];
+						anIntArray1640[TriangleCount] = model_1.anIntArray1640[j1];
+						anIntArray1631[TriangleCount] = method465(model_1, model_1.anIntArray1631[j1]);
+						anIntArray1632[TriangleCount] = method465(model_1, model_1.anIntArray1632[j1]);
+						anIntArray1633[TriangleCount] = method465(model_1, model_1.anIntArray1633[j1]);
+						TriangleCount++;
 					}
 
 					for (int l1 = 0; l1 < model_1.anInt1642; l1++)
@@ -411,8 +409,8 @@ namespace Cache_Editor_API.Graphics3D
 			bool flag2 = false;
 			bool flag3 = false;
 			bool flag4 = false;
-			anInt1626 = 0;
-			anInt1630 = 0;
+			VertexCount = 0;
+			TriangleCount = 0;
 			anInt1642 = 0;
 			anInt1641 = -1;
 			for (int k = 0; k < i; k++)
@@ -420,8 +418,8 @@ namespace Cache_Editor_API.Graphics3D
 				Model model = aclass30_sub2_sub4_sub6s[k];
 				if (model != null)
 				{
-					anInt1626 += model.anInt1626;
-					anInt1630 += model.anInt1630;
+					VertexCount += model.VertexCount;
+					TriangleCount += model.TriangleCount;
 					anInt1642 += model.anInt1642;
 					flag1 |= model.anIntArray1637 != null;
 					if (model.anIntArray1638 != null)
@@ -440,28 +438,28 @@ namespace Cache_Editor_API.Graphics3D
 				}
 			}
 
-			vertices_x = new int[anInt1626];
-			vertices_y = new int[anInt1626];
-			vertices_z = new int[anInt1626];
-			anIntArray1631 = new int[anInt1630];
-			anIntArray1632 = new int[anInt1630];
-			anIntArray1633 = new int[anInt1630];
-			anIntArray1634 = new int[anInt1630];
-			anIntArray1635 = new int[anInt1630];
-			anIntArray1636 = new int[anInt1630];
+			vertices_x = new int[VertexCount];
+			vertices_y = new int[VertexCount];
+			vertices_z = new int[VertexCount];
+			anIntArray1631 = new int[TriangleCount];
+			anIntArray1632 = new int[TriangleCount];
+			anIntArray1633 = new int[TriangleCount];
+			anIntArray1634 = new int[TriangleCount];
+			anIntArray1635 = new int[TriangleCount];
+			anIntArray1636 = new int[TriangleCount];
 			anIntArray1643 = new int[anInt1642];
 			anIntArray1644 = new int[anInt1642];
 			anIntArray1645 = new int[anInt1642];
 			if (flag1)
-				anIntArray1637 = new int[anInt1630];
+				anIntArray1637 = new int[TriangleCount];
 			if (flag2)
-				anIntArray1638 = new int[anInt1630];
+				anIntArray1638 = new int[TriangleCount];
 			if (flag3)
-				anIntArray1639 = new int[anInt1630];
+				anIntArray1639 = new int[TriangleCount];
 			if (flag4)
-				anIntArray1640 = new int[anInt1630];
-			anInt1626 = 0;
-			anInt1630 = 0;
+				anIntArray1640 = new int[TriangleCount];
+			VertexCount = 0;
+			TriangleCount = 0;
 			anInt1642 = 0;
 			int i1 = 0;
 			for (int j1 = 0; j1 < i; j1++)
@@ -469,48 +467,48 @@ namespace Cache_Editor_API.Graphics3D
 				Model model_1 = aclass30_sub2_sub4_sub6s[j1];
 				if (model_1 != null)
 				{
-					int k1 = anInt1626;
-					for (int l1 = 0; l1 < model_1.anInt1626; l1++)
+					int k1 = VertexCount;
+					for (int l1 = 0; l1 < model_1.VertexCount; l1++)
 					{
-						vertices_x[anInt1626] = model_1.vertices_x[l1];
-						vertices_y[anInt1626] = model_1.vertices_y[l1];
-						vertices_z[anInt1626] = model_1.vertices_z[l1];
-						anInt1626++;
+						vertices_x[VertexCount] = model_1.vertices_x[l1];
+						vertices_y[VertexCount] = model_1.vertices_y[l1];
+						vertices_z[VertexCount] = model_1.vertices_z[l1];
+						VertexCount++;
 					}
 
-					for (int i2 = 0; i2 < model_1.anInt1630; i2++)
+					for (int i2 = 0; i2 < model_1.TriangleCount; i2++)
 					{
-						anIntArray1631[anInt1630] = model_1.anIntArray1631[i2] + k1;
-						anIntArray1632[anInt1630] = model_1.anIntArray1632[i2] + k1;
-						anIntArray1633[anInt1630] = model_1.anIntArray1633[i2] + k1;
-						anIntArray1634[anInt1630] = model_1.anIntArray1634[i2];
-						anIntArray1635[anInt1630] = model_1.anIntArray1635[i2];
-						anIntArray1636[anInt1630] = model_1.anIntArray1636[i2];
+						anIntArray1631[TriangleCount] = model_1.anIntArray1631[i2] + k1;
+						anIntArray1632[TriangleCount] = model_1.anIntArray1632[i2] + k1;
+						anIntArray1633[TriangleCount] = model_1.anIntArray1633[i2] + k1;
+						anIntArray1634[TriangleCount] = model_1.anIntArray1634[i2];
+						anIntArray1635[TriangleCount] = model_1.anIntArray1635[i2];
+						anIntArray1636[TriangleCount] = model_1.anIntArray1636[i2];
 						if (flag1)
 							if (model_1.anIntArray1637 == null)
 							{
-								anIntArray1637[anInt1630] = 0;
+								anIntArray1637[TriangleCount] = 0;
 							}
 							else
 							{
 								int j2 = model_1.anIntArray1637[i2];
 								if ((j2 & 2) == 2)
 									j2 += i1 << 2;
-								anIntArray1637[anInt1630] = j2;
+								anIntArray1637[TriangleCount] = j2;
 							}
 						if (flag2)
 							if (model_1.anIntArray1638 == null)
-								anIntArray1638[anInt1630] = model_1.anInt1641;
+								anIntArray1638[TriangleCount] = model_1.anInt1641;
 							else
-								anIntArray1638[anInt1630] = model_1.anIntArray1638[i2];
+								anIntArray1638[TriangleCount] = model_1.anIntArray1638[i2];
 						if (flag3)
 							if (model_1.anIntArray1639 == null)
-								anIntArray1639[anInt1630] = 0;
+								anIntArray1639[TriangleCount] = 0;
 							else
-								anIntArray1639[anInt1630] = model_1.anIntArray1639[i2];
+								anIntArray1639[TriangleCount] = model_1.anIntArray1639[i2];
 						if (flag4 && model_1.anIntArray1640 != null)
-							anIntArray1640[anInt1630] = model_1.anIntArray1640[i2];
-						anInt1630++;
+							anIntArray1640[TriangleCount] = model_1.anIntArray1640[i2];
+						TriangleCount++;
 					}
 
 					for (int k2 = 0; k2 < model_1.anInt1642; k2++)
@@ -531,8 +529,8 @@ namespace Cache_Editor_API.Graphics3D
 		public Model(bool flag, bool flag1, bool flag2, Model model)
 		{
 			aBoolean1659 = false;
-			anInt1626 = model.anInt1626;
-			anInt1630 = model.anInt1630;
+			VertexCount = model.VertexCount;
+			TriangleCount = model.TriangleCount;
 			anInt1642 = model.anInt1642;
 			if (flag2)
 			{
@@ -542,10 +540,10 @@ namespace Cache_Editor_API.Graphics3D
 			}
 			else
 			{
-				vertices_x = new int[anInt1626];
-				vertices_y = new int[anInt1626];
-				vertices_z = new int[anInt1626];
-				for (int j = 0; j < anInt1626; j++)
+				vertices_x = new int[VertexCount];
+				vertices_y = new int[VertexCount];
+				vertices_z = new int[VertexCount];
+				for (int j = 0; j < VertexCount; j++)
 				{
 					vertices_x[j] = model.vertices_x[j];
 					vertices_y[j] = model.vertices_y[j];
@@ -559,8 +557,8 @@ namespace Cache_Editor_API.Graphics3D
 			}
 			else
 			{
-				anIntArray1640 = new int[anInt1630];
-				Array.Copy(model.anIntArray1640, 0, anIntArray1640, 0, anInt1630);
+				anIntArray1640 = new int[TriangleCount];
+				Array.Copy(model.anIntArray1640, 0, anIntArray1640, 0, TriangleCount);
 
 			}
 			if (flag1)
@@ -569,16 +567,16 @@ namespace Cache_Editor_API.Graphics3D
 			}
 			else
 			{
-				anIntArray1639 = new int[anInt1630];
+				anIntArray1639 = new int[TriangleCount];
 				if (model.anIntArray1639 == null)
 				{
-					for (int l = 0; l < anInt1630; l++)
+					for (int l = 0; l < TriangleCount; l++)
 						anIntArray1639[l] = 0;
 
 				}
 				else
 				{
-					Array.Copy(model.anIntArray1639, 0, anIntArray1639, 0, anInt1630);
+					Array.Copy(model.anIntArray1639, 0, anIntArray1639, 0, TriangleCount);
 
 				}
 			}
@@ -598,13 +596,13 @@ namespace Cache_Editor_API.Graphics3D
 		public Model(bool flag, bool flag1, Model model)
 		{
 			aBoolean1659 = false;
-			anInt1626 = model.anInt1626;
-			anInt1630 = model.anInt1630;
+			VertexCount = model.VertexCount;
+			TriangleCount = model.TriangleCount;
 			anInt1642 = model.anInt1642;
 			if (flag)
 			{
-				vertices_y = new int[anInt1626];
-				Array.Copy(model.vertices_y, 0, vertices_y, 0, anInt1626);
+				vertices_y = new int[VertexCount];
+				Array.Copy(model.vertices_y, 0, vertices_y, 0, VertexCount);
 
 			}
 			else
@@ -613,30 +611,30 @@ namespace Cache_Editor_API.Graphics3D
 			}
 			if (flag1)
 			{
-				anIntArray1634 = new int[anInt1630];
-				anIntArray1635 = new int[anInt1630];
-				anIntArray1636 = new int[anInt1630];
-				for (int k = 0; k < anInt1630; k++)
+				anIntArray1634 = new int[TriangleCount];
+				anIntArray1635 = new int[TriangleCount];
+				anIntArray1636 = new int[TriangleCount];
+				for (int k = 0; k < TriangleCount; k++)
 				{
 					anIntArray1634[k] = model.anIntArray1634[k];
 					anIntArray1635[k] = model.anIntArray1635[k];
 					anIntArray1636[k] = model.anIntArray1636[k];
 				}
 
-				anIntArray1637 = new int[anInt1630];
+				anIntArray1637 = new int[TriangleCount];
 				if (model.anIntArray1637 == null)
 				{
-					for (int l = 0; l < anInt1630; l++)
+					for (int l = 0; l < TriangleCount; l++)
 						anIntArray1637[l] = 0;
 
 				}
 				else
 				{
-					Array.Copy(model.anIntArray1637, 0, anIntArray1637, 0, anInt1630);
+					Array.Copy(model.anIntArray1637, 0, anIntArray1637, 0, TriangleCount);
 
 				}
-				base.aVertexNormalArray1425 = new VertexNormal[anInt1626];
-				for (int j1 = 0; j1 < anInt1626; j1++)
+				base.aVertexNormalArray1425 = new VertexNormal[VertexCount];
+				for (int j1 = 0; j1 < VertexCount; j1++)
 				{
 					VertexNormal class33 = base.aVertexNormalArray1425[j1] = new VertexNormal();
 					VertexNormal class33_1 = model.aVertexNormalArray1425[j1];
@@ -680,19 +678,19 @@ namespace Cache_Editor_API.Graphics3D
 
 		public void method464(Model model, bool flag)
 		{
-			anInt1626 = model.anInt1626;
-			anInt1630 = model.anInt1630;
+			VertexCount = model.VertexCount;
+			TriangleCount = model.TriangleCount;
 			anInt1642 = model.anInt1642;
-			if (anIntArray1622.Length < anInt1626)
+			if (anIntArray1622.Length < VertexCount)
 			{
-				anIntArray1622 = new int[anInt1626 + 100];
-				anIntArray1623 = new int[anInt1626 + 100];
-				anIntArray1624 = new int[anInt1626 + 100];
+				anIntArray1622 = new int[VertexCount + 100];
+				anIntArray1623 = new int[VertexCount + 100];
+				anIntArray1624 = new int[VertexCount + 100];
 			}
 			vertices_x = anIntArray1622;
 			vertices_y = anIntArray1623;
 			vertices_z = anIntArray1624;
-			for (int k = 0; k < anInt1626; k++)
+			for (int k = 0; k < VertexCount; k++)
 			{
 				vertices_x[k] = model.vertices_x[k];
 				vertices_y[k] = model.vertices_y[k];
@@ -705,18 +703,18 @@ namespace Cache_Editor_API.Graphics3D
 			}
 			else
 			{
-				if (anIntArray1625.Length < anInt1630)
-					anIntArray1625 = new int[anInt1630 + 100];
+				if (anIntArray1625.Length < TriangleCount)
+					anIntArray1625 = new int[TriangleCount + 100];
 				anIntArray1639 = anIntArray1625;
 				if (model.anIntArray1639 == null)
 				{
-					for (int l = 0; l < anInt1630; l++)
+					for (int l = 0; l < TriangleCount; l++)
 						anIntArray1639[l] = 0;
 
 				}
 				else
 				{
-					Array.Copy(model.anIntArray1639, 0, anIntArray1639, 0, anInt1630);
+					Array.Copy(model.anIntArray1639, 0, anIntArray1639, 0, TriangleCount);
 
 				}
 			}
@@ -743,7 +741,7 @@ namespace Cache_Editor_API.Graphics3D
 			int k = model.vertices_x[i];
 			int l = model.vertices_y[i];
 			int i1 = model.vertices_z[i];
-			for (int j1 = 0; j1 < anInt1626; j1++)
+			for (int j1 = 0; j1 < VertexCount; j1++)
 			{
 				if (k != vertices_x[j1] || l != vertices_y[j1] || i1 != vertices_z[j1])
 					continue;
@@ -753,12 +751,12 @@ namespace Cache_Editor_API.Graphics3D
 
 			if (j == -1)
 			{
-				vertices_x[anInt1626] = k;
-				vertices_y[anInt1626] = l;
-				vertices_z[anInt1626] = i1;
+				vertices_x[VertexCount] = k;
+				vertices_y[VertexCount] = l;
+				vertices_z[VertexCount] = i1;
 				if (model.anIntArray1655 != null)
-					anIntArray1655[anInt1626] = model.anIntArray1655[i];
-				j = anInt1626++;
+					anIntArray1655[VertexCount] = model.anIntArray1655[i];
+				j = VertexCount++;
 			}
 			return j;
 		}
@@ -768,7 +766,7 @@ namespace Cache_Editor_API.Graphics3D
 			base.modelHeight = 0;
 			anInt1650 = 0;
 			anInt1651 = 0;
-			for (int i = 0; i < anInt1626; i++)
+			for (int i = 0; i < VertexCount; i++)
 			{
 				int j = vertices_x[i];
 				int k = vertices_y[i];
@@ -790,7 +788,7 @@ namespace Cache_Editor_API.Graphics3D
 		{
 			base.modelHeight = 0;
 			anInt1651 = 0;
-			for (int i = 0; i < anInt1626; i++)
+			for (int i = 0; i < VertexCount; i++)
 			{
 				int j = vertices_y[i];
 				if (-j > base.modelHeight)
@@ -812,7 +810,7 @@ namespace Cache_Editor_API.Graphics3D
 			anInt1647 = unchecked((int)0xfff0bdc1);
 			anInt1648 = unchecked((int)0xfffe7961);
 			anInt1649 = 0x1869f;
-			for (int j = 0; j < anInt1626; j++)
+			for (int j = 0; j < VertexCount; j++)
 			{
 				int k = vertices_x[j];
 				int l = vertices_y[j];
@@ -845,7 +843,7 @@ namespace Cache_Editor_API.Graphics3D
 			{
 				int[] ai = new int[256];
 				int j = 0;
-				for (int l = 0; l < anInt1626; l++)
+				for (int l = 0; l < VertexCount; l++)
 				{
 					int j1 = anIntArray1655[l];
 					ai[j1]++;
@@ -860,7 +858,7 @@ namespace Cache_Editor_API.Graphics3D
 					ai[k1] = 0;
 				}
 
-				for (int j2 = 0; j2 < anInt1626; j2++)
+				for (int j2 = 0; j2 < VertexCount; j2++)
 				{
 					int l2 = anIntArray1655[j2];
 					anIntArrayArray1657[l2][ai[l2]++] = j2;
@@ -872,7 +870,7 @@ namespace Cache_Editor_API.Graphics3D
 			{
 				int[] ai1 = new int[256];
 				int k = 0;
-				for (int i1 = 0; i1 < anInt1630; i1++)
+				for (int i1 = 0; i1 < TriangleCount; i1++)
 				{
 					int l1 = anIntArray1656[i1];
 					ai1[l1]++;
@@ -887,7 +885,7 @@ namespace Cache_Editor_API.Graphics3D
 					ai1[i2] = 0;
 				}
 
-				for (int k2 = 0; k2 < anInt1630; k2++)
+				for (int k2 = 0; k2 < TriangleCount; k2++)
 				{
 					int i3 = anIntArray1656[k2];
 					anIntArrayArray1658[i3][ai1[i3]++] = k2;
@@ -1132,7 +1130,7 @@ namespace Cache_Editor_API.Graphics3D
 
 		public void method473()
 		{
-			for (int j = 0; j < anInt1626; j++)
+			for (int j = 0; j < VertexCount; j++)
 			{
 				int k = vertices_x[j];
 				vertices_x[j] = vertices_z[j];
@@ -1145,7 +1143,7 @@ namespace Cache_Editor_API.Graphics3D
 		{
 			int k = SIN[i];
 			int l = COS[i];
-			for (int i1 = 0; i1 < anInt1626; i1++)
+			for (int i1 = 0; i1 < VertexCount; i1++)
 			{
 				int j1 = vertices_y[i1] * l - vertices_z[i1] * k >> 16;
 				vertices_z[i1] = vertices_y[i1] * k + vertices_z[i1] * l >> 16;
@@ -1153,9 +1151,9 @@ namespace Cache_Editor_API.Graphics3D
 			}
 		}
 
-		public void method475(int i, int j, int l)
+		public void Translate(int i, int j, int l)
 		{
-			for (int i1 = 0; i1 < anInt1626; i1++)
+			for (int i1 = 0; i1 < VertexCount; i1++)
 			{
 				vertices_x[i1] += i;
 				vertices_y[i1] += j;
@@ -1166,7 +1164,7 @@ namespace Cache_Editor_API.Graphics3D
 
 		public void SetColor(int i, int j)
 		{
-			for (int k = 0; k < anInt1630; k++)
+			for (int k = 0; k < TriangleCount; k++)
 				if (anIntArray1640[k] == i)
 					anIntArray1640[k] = j;
 
@@ -1174,10 +1172,10 @@ namespace Cache_Editor_API.Graphics3D
 
 		public void method477()
 		{
-			for (int j = 0; j < anInt1626; j++)
+			for (int j = 0; j < VertexCount; j++)
 				vertices_z[j] = -vertices_z[j];
 
-			for (int k = 0; k < anInt1630; k++)
+			for (int k = 0; k < TriangleCount; k++)
 			{
 				int l = anIntArray1631[k];
 				anIntArray1631[k] = anIntArray1633[k];
@@ -1185,9 +1183,9 @@ namespace Cache_Editor_API.Graphics3D
 			}
 		}
 
-		public void method478(int i, int j, int l)
+		public void Scale(int i, int j, int l)
 		{
-			for (int i1 = 0; i1 < anInt1626; i1++)
+			for (int i1 = 0; i1 < VertexCount; i1++)
 			{
 				vertices_x[i1] = (vertices_x[i1] * i) / 128;
 				vertices_y[i1] = (vertices_y[i1] * l) / 128;
@@ -1202,18 +1200,18 @@ namespace Cache_Editor_API.Graphics3D
 			int k1 = j * j1 >> 8;
 			if (anIntArray1634 == null)
 			{
-				anIntArray1634 = new int[anInt1630];
-				anIntArray1635 = new int[anInt1630];
-				anIntArray1636 = new int[anInt1630];
+				anIntArray1634 = new int[TriangleCount];
+				anIntArray1635 = new int[TriangleCount];
+				anIntArray1636 = new int[TriangleCount];
 			}
 			if (base.aVertexNormalArray1425 == null)
 			{
-				base.aVertexNormalArray1425 = new VertexNormal[anInt1626];
-				for (int l1 = 0; l1 < anInt1626; l1++)
+				base.aVertexNormalArray1425 = new VertexNormal[VertexCount];
+				for (int l1 = 0; l1 < VertexCount; l1++)
 					base.aVertexNormalArray1425[l1] = new VertexNormal();
 
 			}
-			for (int i2 = 0; i2 < anInt1630; i2++)
+			for (int i2 = 0; i2 < TriangleCount; i2++)
 			{
 				int j2 = anIntArray1631[i2];
 				int l2 = anIntArray1632[i2];
@@ -1270,8 +1268,8 @@ namespace Cache_Editor_API.Graphics3D
 			}
 			else
 			{
-				aVertexNormalArray1660 = new VertexNormal[anInt1626];
-				for (int k2 = 0; k2 < anInt1626; k2++)
+				aVertexNormalArray1660 = new VertexNormal[VertexCount];
+				for (int k2 = 0; k2 < VertexCount; k2++)
 				{
 					VertexNormal class33 = base.aVertexNormalArray1425[k2];
 					VertexNormal class33_1 = aVertexNormalArray1660[k2] = new VertexNormal();
@@ -1294,7 +1292,7 @@ namespace Cache_Editor_API.Graphics3D
 
 		public void method480(int i, int j, int k, int l, int i1)
 		{
-			for (int j1 = 0; j1 < anInt1630; j1++)
+			for (int j1 = 0; j1 < TriangleCount; j1++)
 			{
 				int k1 = anIntArray1631[j1];
 				int i2 = anIntArray1632[j1];
@@ -1335,7 +1333,7 @@ namespace Cache_Editor_API.Graphics3D
 			anIntArray1656 = null;
 			if (anIntArray1637 != null)
 			{
-				for (int l1 = 0; l1 < anInt1630; l1++)
+				for (int l1 = 0; l1 < TriangleCount; l1++)
 					if ((anIntArray1637[l1] & 2) == 2)
 						return;
 
@@ -1378,7 +1376,7 @@ namespace Cache_Editor_API.Graphics3D
 			int l3 = SIN[yaw];
 			int i4 = COS[yaw];
 			int j4 = y * l3 + z * i4 >> 16;
-			for (int k4 = 0; k4 < anInt1626; k4++)
+			for (int k4 = 0; k4 < VertexCount; k4++)
 			{
 				int l4 = vertices_x[k4];
 				int i5 = vertices_y[k4];
@@ -1503,7 +1501,7 @@ namespace Cache_Editor_API.Graphics3D
 				l6 = SIN[i];
 				i7 = COS[i];
 			}
-			for (int j7 = 0; j7 < anInt1626; j7++)
+			for (int j7 = 0; j7 < VertexCount; j7++)
 			{
 				int k7 = vertices_x[j7];
 				int l7 = vertices_y[j7];
@@ -1556,7 +1554,7 @@ namespace Cache_Editor_API.Graphics3D
 			for (int j = 0; j < anInt1652; j++)
 				anIntArray1671[j] = 0;
 
-			for (int k = 0; k < anInt1630; k++)
+			for (int k = 0; k < TriangleCount; k++)
 				if (anIntArray1637 == null || anIntArray1637[k] != -1)
 				{
 					int l = anIntArray1631[k];
@@ -1971,11 +1969,11 @@ namespace Cache_Editor_API.Graphics3D
 		private static int[] anIntArray1623 = new int[2000];
 		private static int[] anIntArray1624 = new int[2000];
 		private static int[] anIntArray1625 = new int[2000];
-		public int anInt1626;
+		public int VertexCount;
 		public int[] vertices_x;
 		public int[] vertices_y;
 		public int[] vertices_z;
-		public int anInt1630;
+		public int TriangleCount;
 		public int[] anIntArray1631;
 		public int[] anIntArray1632;
 		public int[] anIntArray1633;

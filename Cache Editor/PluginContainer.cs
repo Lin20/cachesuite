@@ -17,14 +17,6 @@ namespace Cache_Editor
 		public void LoadPlugins()
 		{
 			Plugins = new List<IPlugin>();
-#if DEBUG
-			LoadPlugin(@"C:\Users\Lin\Documents\visual studio 2013\Projects\Cache Editor\HexEditor\bin\Debug\HexEditor.dll");
-			LoadPlugin(@"C:\Users\Lin\Documents\visual studio 2013\Projects\Cache Editor\ImageViewer\bin\Debug\ImageViewer.dll");
-			LoadPlugin(@"C:\Users\Lin\Documents\visual studio 2013\Projects\Cache Editor\PaletteViewer\bin\Debug\PaletteViewer.dll");
-			LoadPlugin(@"C:\Users\Lin\Documents\visual studio 2013\Projects\Cache Editor\ModelViewer\bin\Debug\ModelViewer.dll");
-			//LoadPlugin(@"C:\Users\Lin\Desktop\Cache Editor\HexEditor\bin\Debug\HexEditor.dll");
-			//LoadPlugin(@"C:\Users\Lin\Desktop\Cache Editor\ImageViewer\bin\Debug\ImageViewer.dll");
-#endif
 
 			if (!Directory.Exists("./Plugins"))
 				Directory.CreateDirectory("./Plugins");

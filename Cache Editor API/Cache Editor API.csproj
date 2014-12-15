@@ -50,6 +50,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\VarBit.cs" />
     <Compile Include="Controls\ModelViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -59,7 +60,11 @@
     <Compile Include="Controls\SelectablePictureBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Definitions\ItemDefinition.cs" />
+    <Compile Include="Config\ChangesModel.cs" />
+    <Compile Include="Config\ChangesItemSprite.cs" />
+    <Compile Include="Config\ItemDefinition.cs" />
+    <Compile Include="Config\NPCDefinition.cs" />
+    <Compile Include="Config\ObjectDefinition.cs" />
     <Compile Include="Graphics3D\Animable.cs" />
     <Compile Include="Graphics3D\Class40.cs" />
     <Compile Include="Graphics3D\Class43.cs" />
@@ -129,6 +134,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="nQuant\Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controls\ModelViewer.resx">
+      <DependentUpon>ModelViewer.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

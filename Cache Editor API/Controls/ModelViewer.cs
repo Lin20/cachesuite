@@ -39,19 +39,20 @@ namespace Cache_Editor_API.Controls
 
 		public int Yaw { get; set; }
 		public int Pitch { get; set; }
+		public int Roll { get; set; }
 		private int c_x;
 		private int c_y;
 		private int c_z;
 
-		private SimpleOpenGlControl gl_control;
-		private SelectablePictureBox software_control;
+		public SimpleOpenGlControl gl_control;
+		public SelectablePictureBox software_control;
 		public static bool SoftwareRendering { get; set; }
 
 		public ModelViewer()
 		{
-			InitializeComponent();
 			try
 			{
+				InitializeComponent();
 				Label not = new Label();
 				not.AutoSize = false;
 				not.Text = "Not a model";
@@ -132,22 +133,7 @@ namespace Cache_Editor_API.Controls
 
 		private void gl_control_SizeChanged(object sender, EventArgs e)
 		{
-			int width = Controls[(SoftwareRendering ? 2 : 1)].Width;
-			int height = Controls[(SoftwareRendering ? 2 : 1)].Height;
-			checkerboard = new int[width * height];
-			for (int i = 0; i < width * height; i++)
-			{
-				int x = i % width;
-				int y = i / width;
-				if ((x % 32 < 16 && y % 32 < 16) || (x % 32 >= 16 && y % 32 >= 16))
-					checkerboard[i] = unchecked((int)0xFFD3D3D3);
-				else
-					checkerboard[i] = unchecked((int)0xFFFFFFFF);
-			}
-
-			pixel_buffer = new int[checkerboard.Length];
-			SetupTexture();
-			DrawModel();
+			UpdateBuffer();
 		}
 
 		private void gl_control_KeyDown(object sender, KeyEventArgs e)
@@ -199,8 +185,11 @@ namespace Cache_Editor_API.Controls
 						Yaw += Model.SIN.Length;
 					while (Pitch < 0)
 						Pitch += Model.COS.Length;
+					while (Roll < 0)
+						Roll += Model.COS.Length;
 					Yaw %= Model.SIN.Length;
 					Pitch %= Model.COS.Length;
+					Roll %= Model.COS.Length;
 					int i5 = Rasterizer.SIN[Yaw] * c_z >> 16;
 					int l5 = Rasterizer.COS[Yaw] * c_z >> 16;
 					bool animated = false; //interfaceIsSelected(class9_1);
@@ -220,7 +209,7 @@ namespace Cache_Editor_API.Controls
 						model = class9_1.method209(animation.anIntArray354[class9_1.anInt246], animation.anIntArray353[class9_1.anInt246], animated);
 					}*/
 					if (SelectedModel != null)
-						SelectedModel.Render(Pitch, 0, Yaw, 0, i5, l5);
+						SelectedModel.Render(Pitch, Roll, Yaw, 0, i5, l5);
 					Rasterizer.center_x = k3;
 					Rasterizer.center_y = j4;
 
@@ -253,7 +242,14 @@ namespace Cache_Editor_API.Controls
 				}
 				catch (Exception)
 				{
+					success = false;
 				}
+			}
+			else
+			{
+				Controls[(SoftwareRendering ? 2 : 1)].Visible = false;
+				Controls[0].Visible = true;
+				this.Invalidate();
 			}
 
 			if (!success)
@@ -282,6 +278,53 @@ namespace Cache_Editor_API.Controls
 			Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_WRAP_T, Gl.GL_CLAMP);
 
 			Gl.glEnable(Gl.GL_TEXTURE_2D);
+		}
+
+		public void SetModel(Model m, bool reset_view = true, bool redraw = true)
+		{
+			selected_model = m;
+			if (reset_view)
+			{
+				c_z = 400;
+				Yaw = 0;
+				Pitch = 0;
+				Roll = 0;
+				c_x = 0;
+				c_y = 0;
+				c_z = 400;
+			}
+			if (selected_model == null)
+			{
+				Controls[(SoftwareRendering ? 2 : 1)].Visible = false;
+				Controls[0].Visible = true;
+			}
+			else if (redraw)
+			{
+				Controls[(SoftwareRendering ? 2 : 1)].Visible = true;
+				Controls[0].Visible = false;
+				DrawModel();
+			}
+		}
+
+		public void UpdateBuffer()
+		{
+			this.Refresh();
+			int width = Controls[(SoftwareRendering ? 2 : 1)].Width;
+			int height = Controls[(SoftwareRendering ? 2 : 1)].Height;
+			checkerboard = new int[width * height];
+			for (int i = 0; i < width * height; i++)
+			{
+				int x = i % width;
+				int y = i / width;
+				if ((x % 32 < 16 && y % 32 < 16) || (x % 32 >= 16 && y % 32 >= 16))
+					checkerboard[i] = unchecked((int)0xFFD3D3D3);
+				else
+					checkerboard[i] = unchecked((int)0xFFFFFFFF);
+			}
+
+			pixel_buffer = new int[checkerboard.Length];
+			SetupTexture();
+			DrawModel();
 		}
 	}
 }

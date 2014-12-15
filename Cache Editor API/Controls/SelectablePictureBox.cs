@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace Cache_Editor_API.Controls
 {
-	class SelectablePictureBox : PictureBox
+	public class SelectablePictureBox : PictureBox
 	{
 		public SelectablePictureBox()
 		{

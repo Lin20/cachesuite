@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.ComponentModel;
 using Cache_Editor_API.Graphics3D;
 
-namespace Cache_Editor_API.Definitions
+namespace Cache_Editor_API.Config
 {
 	public class ItemDefinition
 	{
@@ -69,10 +70,10 @@ namespace Cache_Editor_API.Definitions
             };
 				model = new Model(2, aclass30_sub2_sub4_sub6s);
 			}
-			if (modifiedModelColors != null)
+			if (ModelRecolorIndexes != null)
 			{
-				for (int i1 = 0; i1 < modifiedModelColors.Length; i1++)
-					model.SetColor(modifiedModelColors[i1], originalModelColors[i1]);
+				for (int i1 = 0; i1 < ModelRecolorIndexes.Length; i1++)
+					model.SetColor(ModelRecolorIndexes[i1], ModelRecolorColors[i1]);
 
 			}
 			return model;
@@ -134,13 +135,13 @@ namespace Cache_Editor_API.Definitions
 					model = new Model(2, aclass30_sub2_sub4_sub6s);
 				}
 			if (i == 0 && aByte205 != 0)
-				model.method475(0, aByte205, 0);
+				model.Translate(0, aByte205, 0);
 			if (i == 1 && aByte154 != 0)
-				model.method475(0, aByte154, 0);
-			if (modifiedModelColors != null)
+				model.Translate(0, aByte154, 0);
+			if (ModelRecolorIndexes != null)
 			{
-				for (int i1 = 0; i1 < modifiedModelColors.Length; i1++)
-					model.SetColor(modifiedModelColors[i1], originalModelColors[i1]);
+				for (int i1 = 0; i1 < ModelRecolorIndexes.Length; i1++)
+					model.SetColor(ModelRecolorIndexes[i1], ModelRecolorColors[i1]);
 
 			}
 			return model;
@@ -151,14 +152,14 @@ namespace Cache_Editor_API.Definitions
 			ModelIndex = 0;
 			Name = null;
 			Description = null;
-			modifiedModelColors = null;
-			originalModelColors = null;
+			ModelRecolorIndexes = null;
+			ModelRecolorColors = null;
 			Zoom = 2000;
 			RotationX = 0;
 			RotationY = 0;
-			anInt204 = 0;
-			modelOffset1 = 0;
-			modelOffset2 = 0;
+			RotationZ = 0;
+			SpriteX = 0;
+			SpriteY = 0;
 			Stackable = false;
 			Cost = 1;
 			MembersObject = false;
@@ -176,16 +177,16 @@ namespace Cache_Editor_API.Definitions
 			anInt166 = -1;
 			anInt197 = -1;
 			anInt173 = -1;
-			stackIDs = null;
-			stackAmounts = null;
+			StackedItemIDs = null;
+			StackChangeAmounts = null;
 			NotedID = -1;
-			certTemplateID = -1;
-			anInt167 = 128;
-			anInt192 = 128;
-			anInt191 = 128;
-			anInt196 = 0;
-			anInt184 = 0;
-			team = 0;
+			NotedModelItemID = -1;
+			ScaleX = 128;
+			ScaleY = 128;
+			ScaleZ = 128;
+			LightIntensity = 0;
+			LightDistance = 0;
+			Team = 0;
 		}
 
 		public static ItemDefinition GetItem(int id)
@@ -200,24 +201,24 @@ namespace Cache_Editor_API.Definitions
 			itemDef.ID = id;
 			itemDef.Reset();
 			itemDef.ReadItem(stream);
-			if (itemDef.certTemplateID != -1)
+			if (itemDef.NotedModelItemID != -1)
 				itemDef.ConvertToNote();
 			return itemDef;
 		}
 
 		private void ConvertToNote()
 		{
-			ItemDefinition itemDef = GetItem(certTemplateID);
+			ItemDefinition itemDef = GetItem(NotedModelItemID);
 			ModelIndex = itemDef.ModelIndex;
 			Zoom = itemDef.Zoom;
 			RotationX = itemDef.RotationX;
 			RotationY = itemDef.RotationY;
 
-			anInt204 = itemDef.anInt204;
-			modelOffset1 = itemDef.modelOffset1;
-			modelOffset2 = itemDef.modelOffset2;
-			modifiedModelColors = itemDef.modifiedModelColors;
-			originalModelColors = itemDef.originalModelColors;
+			RotationZ = itemDef.RotationZ;
+			SpriteX = itemDef.SpriteX;
+			SpriteY = itemDef.SpriteY;
+			ModelRecolorIndexes = itemDef.ModelRecolorIndexes;
+			ModelRecolorColors = itemDef.ModelRecolorColors;
 			ItemDefinition itemDef_1 = GetItem(NotedID);
 			Name = itemDef_1.Name;
 			MembersObject = itemDef_1.MembersObject;
@@ -239,14 +240,14 @@ namespace Cache_Editor_API.Definitions
 		{
 			Color k_color = Color.FromArgb(selection_color);
 			ItemDefinition itemDef = GetItem(id);
-			if (itemDef.stackIDs == null)
+			if (itemDef.StackedItemIDs == null)
 				amount = -1;
 			if (amount > 1)
 			{
 				int i1 = -1;
 				for (int j1 = 0; j1 < 10; j1++)
-					if (amount >= itemDef.stackAmounts[j1] && itemDef.stackAmounts[j1] != 0)
-						i1 = itemDef.stackIDs[j1];
+					if (amount >= itemDef.StackChangeAmounts[j1] && itemDef.StackChangeAmounts[j1] != 0)
+						i1 = itemDef.StackedItemIDs[j1];
 
 				if (i1 != -1)
 					itemDef = GetItem(i1);
@@ -255,7 +256,7 @@ namespace Cache_Editor_API.Definitions
 			if (model == null)
 				return null;
 			RSImage sprite = null;
-			if (itemDef.certTemplateID != -1)
+			if (itemDef.NotedModelItemID != -1)
 			{
 				sprite = GetModelSprite(itemDef.NotedID, 10, -1);
 				if (sprite == null)
@@ -283,7 +284,7 @@ namespace Cache_Editor_API.Definitions
 				k3 = (int)((double)k3 * 1.04D);
 			int l3 = Rasterizer.SIN[itemDef.RotationX] * k3 >> 16;
 			int i4 = Rasterizer.COS[itemDef.RotationX] * k3 >> 16;
-			model.Render(itemDef.RotationY, itemDef.anInt204, itemDef.RotationX, itemDef.modelOffset1, l3 + model.modelHeight / 2 + itemDef.modelOffset2, i4 + itemDef.modelOffset2);
+			model.Render(itemDef.RotationY, itemDef.RotationZ, itemDef.RotationX, itemDef.SpriteX, l3 + model.modelHeight / 2 + itemDef.SpriteY, i4 + itemDef.SpriteY);
 			
 			//draw the black outline
 			for (int i5 = 31; i5 >= 0; i5--)
@@ -339,7 +340,7 @@ namespace Cache_Editor_API.Definitions
 				}
 
 			}
-			if (itemDef.certTemplateID != -1)
+			if (itemDef.NotedModelItemID != -1)
 			{
 				int l5 = sprite.WholeWidth;
 				int j6 = sprite.WholeHeight;
@@ -366,12 +367,12 @@ namespace Cache_Editor_API.Definitions
 
 		public int GetModelIndex(int amount)
 		{
-			if (stackIDs != null && amount > 1)
+			if (StackedItemIDs != null && amount > 1)
 			{
 				int j = -1;
 				for (int k = 0; k < 10; k++)
-					if (amount >= stackAmounts[k] && stackAmounts[k] != 0)
-						j = stackIDs[k];
+					if (amount >= StackChangeAmounts[k] && StackChangeAmounts[k] != 0)
+						j = StackedItemIDs[k];
 
 				if (j != -1)
 					return GetItem(j).ModelIndex;
@@ -382,12 +383,12 @@ namespace Cache_Editor_API.Definitions
 
 		public Model GetModel(int amount)
 		{
-			if (stackIDs != null && amount > 1)
+			if (StackedItemIDs != null && amount > 1)
 			{
 				int j = -1;
 				for (int k = 0; k < 10; k++)
-					if (amount >= stackAmounts[k] && stackAmounts[k] != 0)
-						j = stackIDs[k];
+					if (amount >= StackChangeAmounts[k] && StackChangeAmounts[k] != 0)
+						j = StackedItemIDs[k];
 
 				if (j != -1)
 					return GetItem(j).GetModel(1);
@@ -395,38 +396,38 @@ namespace Cache_Editor_API.Definitions
 			Model model = Model.LoadModel(LoadedCache, ModelIndex);
 			if (model == null)
 				return null;
-			if (anInt167 != 128 || anInt192 != 128 || anInt191 != 128)
-				model.method478(anInt167, anInt191, anInt192);
-			if (modifiedModelColors != null)
+			if (ScaleX != 128 || ScaleY != 128 || ScaleZ != 128)
+				model.Scale(ScaleX, ScaleZ, ScaleY);
+			if (ModelRecolorIndexes != null)
 			{
-				for (int l = 0; l < modifiedModelColors.Length; l++)
-					model.SetColor(modifiedModelColors[l], originalModelColors[l]);
+				for (int l = 0; l < ModelRecolorIndexes.Length; l++)
+					model.SetColor(ModelRecolorIndexes[l], ModelRecolorColors[l]);
 
 			}
-			model.Light(64 + anInt196, 768 + anInt184, -50, -10, -50, true);
+			model.Light(64 + LightIntensity, 768 + LightDistance, -50, -10, -50, true);
 			model.aBoolean1659 = true;
 			return model;
 		}
 
-		public Model method202(int i)
+		public Model GetModelWithoutLighting(int amount)
 		{
-			if (stackIDs != null && i > 1)
+			if (StackedItemIDs != null && amount > 1)
 			{
 				int j = -1;
 				for (int k = 0; k < 10; k++)
-					if (i >= stackAmounts[k] && stackAmounts[k] != 0)
-						j = stackIDs[k];
+					if (amount >= StackChangeAmounts[k] && StackChangeAmounts[k] != 0)
+						j = StackedItemIDs[k];
 
 				if (j != -1)
-					return GetItem(j).method202(1);
+					return GetItem(j).GetModelWithoutLighting(1);
 			}
 			Model model = Model.LoadModel(LoadedCache, ModelIndex);
 			if (model == null)
 				return null;
-			if (modifiedModelColors != null)
+			if (ModelRecolorIndexes != null)
 			{
-				for (int l = 0; l < modifiedModelColors.Length; l++)
-					model.SetColor(modifiedModelColors[l], originalModelColors[l]);
+				for (int l = 0; l < ModelRecolorIndexes.Length; l++)
+					model.SetColor(ModelRecolorIndexes[l], ModelRecolorColors[l]);
 
 			}
 			return model;
@@ -453,15 +454,15 @@ namespace Cache_Editor_API.Definitions
 					RotationY = stream.ReadShort();
 				else if (i == 7)
 				{
-					modelOffset1 = stream.ReadShort();
-					if (modelOffset1 > 32767)
-						modelOffset1 -= 0x10000;
+					SpriteX = stream.ReadShort();
+					if (SpriteX > 32767)
+						SpriteX -= 0x10000;
 				}
 				else if (i == 8)
 				{
-					modelOffset2 = stream.ReadShort();
-					if (modelOffset2 > 32767)
-						modelOffset2 -= 0x10000;
+					SpriteY = stream.ReadShort();
+					if (SpriteY > 32767)
+						SpriteY -= 0x10000;
 				}
 				else if (i == 10)
 					stream.ReadShort();
@@ -502,12 +503,12 @@ namespace Cache_Editor_API.Definitions
 				else if (i == 40)
 				{
 					int j = stream.ReadByte();
-					modifiedModelColors = new int[j];
-					originalModelColors = new int[j];
+					ModelRecolorIndexes = new int[j];
+					ModelRecolorColors = new int[j];
 					for (int k = 0; k < j; k++)
 					{
-						modifiedModelColors[k] = stream.ReadShort();
-						originalModelColors[k] = stream.ReadShort();
+						ModelRecolorIndexes[k] = stream.ReadShort();
+						ModelRecolorColors[k] = stream.ReadShort();
 					}
 
 				}
@@ -524,33 +525,33 @@ namespace Cache_Editor_API.Definitions
 				else if (i == 93)
 					anInt173 = stream.ReadShort();
 				else if (i == 95)
-					anInt204 = stream.ReadShort();
+					RotationZ = stream.ReadShort();
 				else if (i == 97)
 					NotedID = stream.ReadShort();
 				else if (i == 98)
-					certTemplateID = stream.ReadShort();
+					NotedModelItemID = stream.ReadShort();
 				else if (i >= 100 && i < 110)
 				{
-					if (stackIDs == null)
+					if (StackedItemIDs == null)
 					{
-						stackIDs = new int[10];
-						stackAmounts = new int[10];
+						StackedItemIDs = new int[10];
+						StackChangeAmounts = new int[10];
 					}
-					stackIDs[i - 100] = stream.ReadShort();
-					stackAmounts[i - 100] = stream.ReadShort();
+					StackedItemIDs[i - 100] = stream.ReadShort();
+					StackChangeAmounts[i - 100] = stream.ReadShort();
 				}
 				else if (i == 110)
-					anInt167 = stream.ReadShort();
+					ScaleX = stream.ReadShort();
 				else if (i == 111)
-					anInt192 = stream.ReadShort();
+					ScaleY = stream.ReadShort();
 				else if (i == 112)
-					anInt191 = stream.ReadShort();
+					ScaleZ = stream.ReadShort();
 				else if (i == 113)
-					anInt196 = stream.ReadSignedByte();
+					LightIntensity = stream.ReadSignedByte();
 				else if (i == 114)
-					anInt184 = stream.ReadSignedByte() * 5;
+					LightDistance = stream.ReadSignedByte() * 5;
 				else if (i == 115)
-					team = stream.ReadByte();
+					Team = stream.ReadByte();
 			} while (true);
 		}
 
@@ -559,51 +560,83 @@ namespace Cache_Editor_API.Definitions
 			ID = -1;
 		}
 
-		public static Cache LoadedCache { get; set; }
-		private sbyte aByte154;
-		public int Cost { get; set; }
-		private int[] modifiedModelColors;
-		public int ID { get; set; }
-		private int[] originalModelColors;
-		public bool MembersObject { get; set; }
-		private int anInt162;
-		private int certTemplateID;
-		private int anInt164;
-		private int anInt165;
-		private int anInt166;
-		private int anInt167;
-		public string[] GroundActions { get; set; }
-		private int modelOffset1;
+		[Category("Basic"), Description("The ID of the item.")]
+		public int ID { get; private set; }
+		[Category("Basic"), Description("The name of the item.")]
 		public string Name { get; set; }
-		private static ItemDefinition[] cache;
-		private int anInt173;
-		public int ModelIndex { get; set; }
-		private int anInt175;
-		public bool Stackable { get; set; }
+		[Category("Basic"), Description("The examine text.")]
 		public string Description { get; set; }
-		private int NotedID;
-		private static int cacheIndex;
-		public int Zoom { get; set; }
-		private static DataBuffer stream;
-		private int anInt184;
-		private int anInt185;
-		private int anInt188;
+		[Category("Basic"), Description("Whether or not the item is members-only.")]
+		public bool MembersObject { get; set; }
+		[Category("Basic"), Description("The additional right-click options when the item is on the ground.")]
+		public string[] GroundActions { get; set; }
+		[Category("Basic"), Description("The cost of the item.")]
+		public int Cost { get; set; }
+		[Category("Basic"), Description("The additional right-click options when the item is in an interface.")]
 		public string[] Actions { get; set; }
+		[Category("Basic"), Description("The team ID of the item. This is used for team capes.")]
+		public int Team { get; set; }
+
+		[Category("Stacking"), Description("Whether or not the item is stackable.")]
+		public bool Stackable { get; set; }
+		[Category("Stacking"), Description("The item ID used for the noted back model. It is generally the certificate model, 799.")]
+		public int NotedModelItemID { get; set; }
+		[Category("Stacking"), Description("The item IDs to change to as the item's amount changes.")]
+		public int[] StackedItemIDs { get; set; }
+		[Category("Stacking"), Description("The item amounts at which the stack ID changes.")]
+		public int[] StackChangeAmounts { get; set; }
+
+		[Category("Model"), Description("The item's associated model."), ChangesItemSprite(true), ChangesModel(true)]
+		public int ModelIndex { get; set; }
+		[Category("Model"), Description("The indexes of the colors to change in the model."), ChangesItemSprite(true), ChangesModel(true)]
+		public int[] ModelRecolorIndexes { get; set; }
+		[Category("Model"), Description("The new color values, indexed in accordance to ModelRecolorIndexes."), ChangesItemSprite(true), ChangesModel(true)]
+		public int[] ModelRecolorColors { get; set; }
+		[Category("Model"), Description("The distance the light source is from the model."), ChangesItemSprite(true), ChangesModel(true)]
+		public int LightDistance { get; set; }
+		[Category("Model"), Description("The intensity of the light source."), ChangesItemSprite(true), ChangesModel(true)]
+		public int LightIntensity { get; set; }
+
+		[Category("Sprite"), Description("The item index that appears on the bank note when the item is noted."), ChangesItemSprite(true)]
+		public int NotedID { get; set; }
+		[Category("Sprite"), Description("The X offset of the model's rendered sprite."), ChangesItemSprite(true)]
+		public int SpriteX { get; set; }
+		[Category("Sprite"), Description("The Y offset of the model's rendered sprite."), ChangesItemSprite(true)]
+		public int SpriteY { get; set; }
+		[Category("Sprite"), Description("The X rotation of the model's rendered sprite."), ChangesItemSprite(true)]
 		public int RotationX { get; set; }
-		private int anInt191;
-		private int anInt192;
-		private int[] stackIDs;
-		private int modelOffset2;
-		private static int[] ItemDataLocations;
-		private int anInt196;
-		private int anInt197;
+		[Category("Sprite"), Description("The Y rotation of the model's rendered sprite."), ChangesItemSprite(true)]
 		public int RotationY { get; set; }
-		private int anInt200;
-		private int[] stackAmounts;
-		public int team;
+		[Category("Sprite"), Description("The Z rotation of the model's rendered sprite."), ChangesItemSprite(true)]
+		public int RotationZ { get; set; }
+		[Category("Sprite"), Description("The zoom of the model's rendered sprite."), ChangesItemSprite(true)]
+		public int Zoom { get; set; }
+		[Category("Sprite"), Description("The X scale of the model."), ChangesItemSprite(true), ChangesModel(true)]
+		public int ScaleX { get; set; }
+		[Category("Sprite"), Description("The Y scale of the model."), ChangesItemSprite(true), ChangesModel(true)]
+		public int ScaleY { get; set; }
+		[Category("Sprite"), Description("The Z scale of the model."), ChangesItemSprite(true), ChangesModel(true)]
+		public int ScaleZ { get; set; }
+
+		public static Cache LoadedCache { get; set; }
+		public sbyte aByte154 { get; set; }
+		public int anInt162 { get; set; }
+		
+		public int anInt164 { get; set; }
+		public int anInt165 { get; set; }
+		public int anInt166{ get; set; }
+		private static ItemDefinition[] cache;
+		public int anInt173 { get; set; }
+		public int anInt175 { get; set; }
+		private static int cacheIndex;
+		private static DataBuffer stream;
+		public int anInt185 { get; set; }
+		public int anInt188 { get; set; }
+		public static int[] ItemDataLocations;
+		public int anInt197 { get; set; }
+		public int anInt200 { get; set; }
 		public static int TotalItems;
-		private int anInt204;
-		private sbyte aByte205;
+		public sbyte aByte205 { get; set; }
 
 	}
 

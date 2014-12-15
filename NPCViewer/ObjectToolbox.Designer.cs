@@ -1,4 +1,4 @@
-﻿namespace ItemViewer
+﻿namespace NPCViewer
 {
 	partial class ItemToolbox
 	{
@@ -30,17 +30,13 @@
 		{
 			this.label1 = new System.Windows.Forms.Label();
 			this.nItem = new System.Windows.Forms.NumericUpDown();
-			this.nAmount = new System.Windows.Forms.NumericUpDown();
-			this.label2 = new System.Windows.Forms.Label();
-			this.chkModelSprite = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.nItem)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.nAmount)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(19, 21);
+			this.label1.Location = new System.Drawing.Point(7, 21);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(30, 13);
 			this.label1.TabIndex = 0;
@@ -48,65 +44,25 @@
 			// 
 			// nItem
 			// 
-			this.nItem.Location = new System.Drawing.Point(55, 19);
+			this.nItem.Location = new System.Drawing.Point(43, 19);
 			this.nItem.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
 			this.nItem.Name = "nItem";
-			this.nItem.Size = new System.Drawing.Size(109, 20);
+			this.nItem.Size = new System.Drawing.Size(121, 20);
 			this.nItem.TabIndex = 1;
-			// 
-			// nAmount
-			// 
-			this.nAmount.Location = new System.Drawing.Point(55, 45);
-			this.nAmount.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-			this.nAmount.Name = "nAmount";
-			this.nAmount.Size = new System.Drawing.Size(109, 20);
-			this.nAmount.TabIndex = 3;
-			this.nAmount.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-			// 
-			// label2
-			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(3, 47);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(46, 13);
-			this.label2.TabIndex = 2;
-			this.label2.Text = "Amount:";
-			// 
-			// chkModelSprite
-			// 
-			this.chkModelSprite.AutoSize = true;
-			this.chkModelSprite.Location = new System.Drawing.Point(6, 71);
-			this.chkModelSprite.Name = "chkModelSprite";
-			this.chkModelSprite.Size = new System.Drawing.Size(147, 17);
-			this.chkModelSprite.TabIndex = 4;
-			this.chkModelSprite.Text = "Lock Item Sprite to Model";
-			this.chkModelSprite.UseVisualStyleBackColor = true;
 			// 
 			// ItemToolbox
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add(this.chkModelSprite);
-			this.Controls.Add(this.nAmount);
-			this.Controls.Add(this.label2);
 			this.Controls.Add(this.nItem);
 			this.Controls.Add(this.label1);
 			this.Name = "ItemToolbox";
 			this.Size = new System.Drawing.Size(167, 150);
 			((System.ComponentModel.ISupportInitialize)(this.nItem)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.nAmount)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -116,8 +72,5 @@
 
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.NumericUpDown nItem;
-		private System.Windows.Forms.NumericUpDown nAmount;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.CheckBox chkModelSprite;
 	}
 }
